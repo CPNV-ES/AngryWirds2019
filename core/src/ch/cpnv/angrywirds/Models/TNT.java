@@ -1,5 +1,7 @@
 package ch.cpnv.angrywirds.Models;
 
+import com.badlogic.gdx.math.Vector2;
+
 /**
  * Created by Xavier on 06.05.18.
  */
@@ -12,8 +14,8 @@ public final class TNT extends PhysicalObject {
 
     private int negativePoints; // Number of pooints removed from score if hit
 
-    public TNT(float positionX, float positionY, int negativePoints) {
-        super(positionX, positionY, WIDTH, HEIGHT, PICNAME);
+    public TNT(Vector2 position, int negativePoints) {
+        super(position, WIDTH, HEIGHT, PICNAME);
         this.negativePoints = negativePoints;
     }
 

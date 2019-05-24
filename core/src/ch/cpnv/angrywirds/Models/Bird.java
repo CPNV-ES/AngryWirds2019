@@ -13,8 +13,8 @@ public final class Bird extends MovingObject {
     private static final int WIDTH = 60;
     private static final int HEIGHT = 60;
 
-    public Bird(float positionX, float positionY, Vector2 speed) {
-        super(positionX, positionY, WIDTH, HEIGHT, PICNAME, speed);
+    public Bird(Vector2 position, Vector2 speed) {
+        super(position, WIDTH, HEIGHT, PICNAME, speed);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package ch.cpnv.angrywirds.Models;
 
+import com.badlogic.gdx.math.Vector2;
+
 /**
  * Created by Xavier on 06.05.18.
  */
@@ -12,8 +14,8 @@ public final class Pig extends PhysicalObject {
 
     private String word; // The word of the vocabulary that this pig carries
 
-    public Pig(float positionX, float positionY, String word) {
-        super(positionX, positionY, WIDTH, HEIGHT, PICNAME);
+    public Pig(Vector2 position, String word) {
+        super(position, WIDTH, HEIGHT, PICNAME);
         this.word = word;
     }
 
