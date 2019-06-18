@@ -1,4 +1,4 @@
-package ch.cpnv.angrywirds.Models;
+package ch.cpnv.angrywirds.Models.Stage;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -19,4 +19,7 @@ public final class TNT extends PhysicalObject {
         this.negativePoints = negativePoints;
     }
 
+    public int getNegativePoints() {
+        return negativePoints;
+    }
 }

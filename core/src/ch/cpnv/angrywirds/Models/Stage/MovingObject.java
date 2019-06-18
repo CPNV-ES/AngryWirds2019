@@ -1,8 +1,8 @@
-package ch.cpnv.angrywirds.Models;
+package ch.cpnv.angrywirds.Models.Stage;
 
 import com.badlogic.gdx.math.Vector2;
 
-import ch.cpnv.angrywirds.AngryWirds;
+import ch.cpnv.angrywirds.Activities.Play;
 
 /**
  * Created by Xavier on 06.05.18.
@@ -10,7 +10,7 @@ import ch.cpnv.angrywirds.AngryWirds;
 
 public abstract class MovingObject extends PhysicalObject {
 
-    public final static float G = 100; // Gravity, for objects that fall
+    public final static float G = 250f; // Gravity, for objects that fall
 
     protected Vector2 speed;
     protected boolean frozen; // Allows to temporarily freeze the movement
@@ -23,21 +23,6 @@ public abstract class MovingObject extends PhysicalObject {
     // the accelerate method implements the speed change, which depends on the physics of the derived object, reason why it is abstract here
     public abstract void accelerate(float dt);
 
-    // Make the object move according to its own speed
-    public final void move(float dt)
-    {
-        if (!frozen) this.translate(speed.x * dt, speed.y * dt);
-    }
-
-    public void update(float dt)
-    {
-        if (!frozen)
-        {
-            accelerate(dt);
-            move(dt);
-        }
-    }
-
     public void freeze() {
         this.frozen = true;
     }
@@ -48,6 +33,16 @@ public abstract class MovingObject extends PhysicalObject {
 
     public void unFreeze() {
         this.frozen = false;
+    }
+
+    // Make the object move according to its own speed
+    public final void move(float dt)
+    {
+        if (!frozen) {
+            translate(speed.x * dt, speed.y * dt);
+            if (getPosition().x < 0 || getPosition().x > Play.WORLD_WIDTH || getPosition().y < Play.FLOOR_HEIGHT || getPosition().y > Play.WORLD_HEIGHT) // Hit screen boundary
+                stop(); // Calm down !!!
+        }
     }
 
     public final void stop()
@@ -63,7 +58,7 @@ public abstract class MovingObject extends PhysicalObject {
     @Override
     public final String toString()
     {
-        return getClass().getSimpleName()+" at ("+this.getX()+","+this.getY()+"), moving at ("+speed.x+","+speed.y+")";
+        return getClass().getSimpleName()+" at ("+getX()+","+getY()+"), moving at ("+speed.x+","+speed.y+")";
     }
 
 }
