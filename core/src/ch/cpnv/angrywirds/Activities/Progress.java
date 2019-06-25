@@ -30,9 +30,14 @@ public class Progress extends GameActivity {
         title = new Title("Progrès");
         vocabulary = VocProvider.vocabularies.get(0); // hardcoded for now
         words = new ArrayList<ShownWord>();
-        for (Word word : vocabulary.getWords())
+        for (int row = 0; row < vocabulary.getWords().size(); row++) {
+            Word word = vocabulary.getWords().get(row);
+            words.add(new ShownWord(row, word.getValue1(), ShownWord.ShowMode.Primary));
             if (word.isTrained())
-                words.add(new ShownWord(500, 500, word.getValue1()));
+                words.add(new ShownWord(row, word.getValue1(), ShownWord.ShowMode.Secondary));
+            else
+                words.add(new ShownWord(row, word.getValue1(), ShownWord.ShowMode.SecondaryTrained));
+        }
     }
 
 

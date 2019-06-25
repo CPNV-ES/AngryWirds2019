@@ -6,47 +6,58 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+import ch.cpnv.angrywirds.Activities.GameActivity;
+import ch.cpnv.angrywirds.AngryWirds;
+
 /**
  * Created by Xavier on 12.05.18.
  */
 
 public final class ShownWord {
 
+    public enum ShowMode { Primary, Secondary, SecondaryTrained}
+
     private static final String PICNAME = "slate.png";
     private static final int WIDTH = 260;
-    private static final int HEIGHT = 160;
-    private static final int TEXT_OFFSET_X = 40; // to place the text inside the bubble
+    private static final int HEIGHT = 40;
+    private static final int TEXT_OFFSET_X = 40; // to place the text inside the slate
     private static final int TEXT_OFFSET_Y = 100;
-    private static final int SHRINKING_TIME = 1;
+    private static final int LEFT_COLUMN_X = GameActivity.WORLD_WIDTH / 3;
+    private static final int RIGHT_COLUMN_X = 2* GameActivity.WORLD_WIDTH / 3;
+    private static final int ROW_HEIGHT = 50;
+
 
     private String word;
-    private float scale; // for shrinking
+    private ShowMode mode;
     private Sprite sprite;
     private BitmapFont font;
 
     /**
      * Bubble will appear for the pig located at x,y
      *
-     * @param x
-     * @param y
+     * @param row
      * @param word
      */
-    public ShownWord(float x, float y, String word) {
+    public ShownWord(int row, String word, ShowMode mode) {
         this.word = word;
-        this.scale = SHRINKING_TIME*1000;
+        this.mode = mode;
         sprite = new Sprite(new Texture(PICNAME));
-        sprite.setBounds(x, y, WIDTH, HEIGHT);
         font= new BitmapFont();
-        font.setColor(Color.BLACK);
         font.getData().setScale(2);
-    }
-
-    public void shrink(float dt)
-    {
-        if (this.scale > 0)
-            this.scale -= dt;
-        else
-            this.scale = 0;
+        switch (mode) {
+            case Primary:
+                sprite.setBounds(LEFT_COLUMN_X, GameActivity.WORLD_HEIGHT - row * ROW_HEIGHT, WIDTH, HEIGHT);
+                font.setColor(Color.BLACK);
+                break;
+            case Secondary:
+                sprite.setBounds(RIGHT_COLUMN_X, GameActivity.WORLD_HEIGHT - row * ROW_HEIGHT, WIDTH, HEIGHT);
+                font.setColor(Color.BLACK);
+                break;
+            case SecondaryTrained:
+                sprite.setBounds(RIGHT_COLUMN_X, GameActivity.WORLD_HEIGHT - row * ROW_HEIGHT, WIDTH, HEIGHT);
+                font.setColor(Color.LIGHT_GRAY);
+                break;
+        }
     }
 
     public void draw(Batch batch)
