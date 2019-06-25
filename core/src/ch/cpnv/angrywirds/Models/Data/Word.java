@@ -8,6 +8,7 @@ public class Word {
     private int id;
     private String value1;
     private String value2;
+    private boolean trained;
 
     public int getId() {
         return id;
@@ -21,10 +22,19 @@ public class Word {
         return value2;
     }
 
+    public boolean isTrained() {
+        return trained;
+    }
+
+    public void setTrained() {
+        this.trained = true;
+    }
+
     public Word(int id, String value1, String value2) {
         this.id = id;
         this.value1 = value1;
         this.value2 = value2;
+        this.trained = false;
     }
 
 }
