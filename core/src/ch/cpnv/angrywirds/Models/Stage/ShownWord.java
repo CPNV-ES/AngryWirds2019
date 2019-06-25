@@ -17,19 +17,15 @@ public final class ShownWord {
 
     public enum ShowMode { Primary, Secondary, SecondaryTrained}
 
-    private static final String PICNAME = "slate.png";
-    private static final int WIDTH = 260;
-    private static final int HEIGHT = 40;
-    private static final int TEXT_OFFSET_X = 40; // to place the text inside the slate
-    private static final int TEXT_OFFSET_Y = 100;
-    private static final int LEFT_COLUMN_X = GameActivity.WORLD_WIDTH / 3;
-    private static final int RIGHT_COLUMN_X = 2* GameActivity.WORLD_WIDTH / 3;
-    private static final int ROW_HEIGHT = 50;
+    private static final int LEFT_COLUMN_X = GameActivity.WORLD_WIDTH / 2;
+    private static final int RIGHT_COLUMN_X = 3* GameActivity.WORLD_WIDTH / 4;
+    private static final int ROW_HEIGHT = 40;
+    private static final int TOP_MARGIN = 100;
 
 
     private String word;
     private ShowMode mode;
-    private Sprite sprite;
+    private int row;
     private BitmapFont font;
 
     /**
@@ -41,28 +37,32 @@ public final class ShownWord {
     public ShownWord(int row, String word, ShowMode mode) {
         this.word = word;
         this.mode = mode;
-        sprite = new Sprite(new Texture(PICNAME));
+        this.row = row;
         font= new BitmapFont();
-        font.getData().setScale(2);
+        font.getData().setScale(1.5f);
         switch (mode) {
             case Primary:
-                sprite.setBounds(LEFT_COLUMN_X, GameActivity.WORLD_HEIGHT - row * ROW_HEIGHT, WIDTH, HEIGHT);
-                font.setColor(Color.BLACK);
+                font.setColor(Color.LIGHT_GRAY);
                 break;
             case Secondary:
-                sprite.setBounds(RIGHT_COLUMN_X, GameActivity.WORLD_HEIGHT - row * ROW_HEIGHT, WIDTH, HEIGHT);
-                font.setColor(Color.BLACK);
+                font.setColor(Color.LIGHT_GRAY);
                 break;
             case SecondaryTrained:
-                sprite.setBounds(RIGHT_COLUMN_X, GameActivity.WORLD_HEIGHT - row * ROW_HEIGHT, WIDTH, HEIGHT);
-                font.setColor(Color.LIGHT_GRAY);
+                font.setColor(Color.BLACK);
                 break;
         }
     }
 
     public void draw(Batch batch)
     {
-        sprite.draw(batch);
-        font.draw(batch, word, sprite.getX()+TEXT_OFFSET_X, sprite.getY()+TEXT_OFFSET_Y);
+        switch (this.mode) {
+            case Primary:
+                font.draw(batch, word, LEFT_COLUMN_X, GameActivity.WORLD_HEIGHT-this.row*ROW_HEIGHT-TOP_MARGIN);
+                break;
+            case Secondary:
+            case SecondaryTrained:
+                font.draw(batch, word, RIGHT_COLUMN_X, GameActivity.WORLD_HEIGHT-this.row*ROW_HEIGHT-TOP_MARGIN);
+                break;
+        }
     }
 }

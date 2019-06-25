@@ -27,7 +27,7 @@ public class Progress extends GameActivity {
     public Progress() {
         super();
         background = new Texture(Gdx.files.internal("background.png"));
-        title = new Title("Progrès");
+        title = new Title("Progrès",0,GameActivity.WORLD_HEIGHT);
         vocabulary = VocProvider.vocabularies.get(0); // hardcoded for now
         words = new ArrayList<ShownWord>();
         for (int row = 0; row < vocabulary.getWords().size(); row++) {
@@ -36,7 +36,7 @@ public class Progress extends GameActivity {
             if (word.isTrained())
                 words.add(new ShownWord(row, word.getValue1(), ShownWord.ShowMode.Secondary));
             else
-                words.add(new ShownWord(row, word.getValue1(), ShownWord.ShowMode.SecondaryTrained));
+                words.add(new ShownWord(row, word.getValue2(), ShownWord.ShowMode.SecondaryTrained));
         }
     }
 
