@@ -37,6 +37,7 @@ public class Play extends GameActivity implements InputProcessor {
     private final int SCORE_BUMP_SUCCESS = 7;
     private final int SCORE_BUMP_FAIL = 1;
     private final int TNT_PENALTY = 5;
+    private final int PROGRESS_BUTTON_SIZE = 80;
 
     private Scenery scenery;
     private Bird tweety;
@@ -96,6 +97,13 @@ public class Play extends GameActivity implements InputProcessor {
         board = new Board(scenery.pickAWord()); // Put one word from a pig on the board
         scoreBoard = new ScoreBoard(70, 240);
 
+        PhysicalObject progressButton = new PhysicalObject(new Vector2(0,0),PROGRESS_BUTTON_SIZE,PROGRESS_BUTTON_SIZE,"progress.png");
+        try {
+            scenery.addElement(progressButton);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         Gdx.input.setInputProcessor(this);
         actions = new LinkedList<Touch>(); // User inputs are queued in here when events fire, handleInput processes them
 
@@ -110,6 +118,9 @@ public class Play extends GameActivity implements InputProcessor {
                         tweety.setX(action.point.x);
                         tweety.setY(action.point.y);
                     }
+
+                    if (action.point.x < PROGRESS_BUTTON_SIZE && action.point.y < PROGRESS_BUTTON_SIZE) // button tapped
+                        AngryWirds.gameActivityManager.push(new Progress());
 
                     Pig piggy = scenery.pigTouched(action.point.x, action.point.y);
                     if (piggy != null)
