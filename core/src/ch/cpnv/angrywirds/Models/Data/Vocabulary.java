@@ -14,6 +14,11 @@ public class Vocabulary {
     String vocName;
     int langprof;
     int langeleve;
+
+    public ArrayList<Word> getWords() {
+        return words;
+    }
+
     ArrayList<Word> words;
 
     public Vocabulary(int id, String vocName, int langprof, int langeleve){

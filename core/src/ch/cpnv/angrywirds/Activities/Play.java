@@ -155,6 +155,7 @@ public class Play extends GameActivity implements InputProcessor {
             } else if (c.equals("Pig")) {
                 Pig p = (Pig)hit;
                 if (p.getWord().getId() == board.getWordId()) { // Correct answer
+                    p.getWord().setTrained();
                     scoreBoard.scoreChange(SCORE_BUMP_SUCCESS);
                     p.setWord(vocabulary.pickAWord());
                     board.setWord(scenery.pickAWord());
