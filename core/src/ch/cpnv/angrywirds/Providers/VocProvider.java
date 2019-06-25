@@ -68,6 +68,7 @@ public abstract class VocProvider {
                     {
                         newvoc.addWord(new Word(word.getInt("mId"), word.getString("mValue1"), word.getString("mValue2")));
                     }
+                    newvoc.getWords().get(2).setTrained(); // for testing
                     vocabularies.add(newvoc);
                 }
                 status = Status.ready;

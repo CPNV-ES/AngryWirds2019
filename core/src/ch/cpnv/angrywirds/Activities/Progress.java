@@ -9,6 +9,7 @@ import ch.cpnv.angrywirds.AngryWirds;
 import ch.cpnv.angrywirds.Models.Data.Vocabulary;
 import ch.cpnv.angrywirds.Models.Data.Word;
 import ch.cpnv.angrywirds.Models.Stage.ScoreBoard;
+import ch.cpnv.angrywirds.Models.Stage.ShownWord;
 import ch.cpnv.angrywirds.Models.Stage.Title;
 import ch.cpnv.angrywirds.Providers.VocProvider;
 
@@ -21,17 +22,17 @@ public class Progress extends GameActivity {
     private Texture background;
     private Title title;
     private Vocabulary vocabulary;
+    private ArrayList<ShownWord> words;
 
     public Progress() {
         super();
         background = new Texture(Gdx.files.internal("background.png"));
         title = new Title("Progrès");
         vocabulary = VocProvider.vocabularies.get(0); // hardcoded for now
+        words = new ArrayList<ShownWord>();
         for (Word word : vocabulary.getWords())
             if (word.isTrained())
-                Gdx.app.log("ANGRY", word.getValue1() + " is trained");
-            else
-                Gdx.app.log("ANGRY", word.getValue1() + " is NOT trained");
+                words.add(new ShownWord(500, 500, word.getValue1()));
     }
 
 
@@ -51,6 +52,7 @@ public class Progress extends GameActivity {
         spriteBatch.begin();
         spriteBatch.draw(background, 0, 0, camera.viewportWidth, camera.viewportHeight);
         title.draw(spriteBatch);
+        for (ShownWord sw : words) sw.draw(spriteBatch);
         spriteBatch.end();
     }
 }
