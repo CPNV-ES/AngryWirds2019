@@ -42,6 +42,10 @@ public class Progress extends GameActivity implements InputProcessor {
     private boolean showRemaining;
     private Queue<Touch> actions;
 
+    private static final int maxDisplayableWords = 19;
+    private int totalWords;
+    private int totalRemainingWords;
+
     public Progress(Vocabulary vocabulary)
     {
         super();
@@ -61,6 +65,11 @@ public class Progress extends GameActivity implements InputProcessor {
         this.showRemaining = false;
         Gdx.input.setInputProcessor(this);
         actions = new LinkedList<Touch>(); // User inputs are queued in here when events fire, handleInput processes them
+
+        for(Word word : vocabulary.getWords()) {
+            if (!word.getCompleted()) totalRemainingWords++;
+            totalWords++;
+        }
     }
 
     @Override
