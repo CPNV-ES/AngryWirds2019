@@ -127,7 +127,7 @@ public class Play extends GameActivity implements InputProcessor {
                     // Clicked on progress button
                     if(action.point.x >= PROGRESS_BUTTON_LOCATION.x && action.point.x <= PROGRESS_BUTTON_LOCATION.x + PROGRESS_BUTTON_SIZE.x
                     && action.point.y >= PROGRESS_BUTTON_LOCATION.y && action.point.y <= PROGRESS_BUTTON_LOCATION.y + PROGRESS_BUTTON_SIZE.y){
-                        AngryWirds.gameActivityManager.push(new Progress());
+                        AngryWirds.gameActivityManager.push(new Progress(vocabulary));
                     }
                     break;
                 case drag:

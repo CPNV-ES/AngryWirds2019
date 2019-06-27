@@ -22,13 +22,16 @@ public class Progress extends GameActivity implements InputProcessor {
     private Queue<Touch> actions;
     private Texture back;
 
+    private Vocabulary vocabulary;
     private static final Vector2 BACK_BUTTON_LOCATION = new Vector2(0,0);
     private static final Vector2 BACK_BUTTON_SIZE = new Vector2(100,100);
 
 
-    public Progress()
+
+    public Progress(Vocabulary vocabulary)
     {
         super();
+        this.vocabulary = vocabulary;
         background = new Texture(Gdx.files.internal("background.png"));
         back = new Texture(Gdx.files.internal("back.png"));
 
