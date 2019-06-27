@@ -28,6 +28,10 @@ public class Vocabulary {
         words.add(w);
     }
 
+    public ArrayList<Word> getWords(){
+        return words;
+    }
+
     public Word pickAWord() {
         return words.get(AngryWirds.alea.nextInt(words.size()));
     }
