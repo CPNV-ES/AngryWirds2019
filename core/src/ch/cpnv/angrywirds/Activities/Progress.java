@@ -24,8 +24,6 @@ public class Progress extends GameActivity implements InputProcessor {
     private Texture back;
     private Texture tick;
     private Texture refresh;
-    private Queue<Touch> actions;
-
     private BitmapFont font;
 
     private Vocabulary vocabulary;
@@ -42,24 +40,25 @@ public class Progress extends GameActivity implements InputProcessor {
     private static final int lineSpacing = 35;
 
     private boolean showRemaining;
-
+    private Queue<Touch> actions;
 
     public Progress(Vocabulary vocabulary)
     {
         super();
-
         this.vocabulary = vocabulary;
+
+        // Set font
         font = new BitmapFont();
         font.setColor(Color.BLACK);
         font.getData().setScale(2);
 
+        // Set textures
         background = new Texture(Gdx.files.internal("background.png"));
         back = new Texture(Gdx.files.internal("back.png"));
         tick = new Texture(Gdx.files.internal("tick.png"));
         refresh = new Texture(Gdx.files.internal("refresh.png"));
 
         this.showRemaining = false;
-
         Gdx.input.setInputProcessor(this);
         actions = new LinkedList<Touch>(); // User inputs are queued in here when events fire, handleInput processes them
     }
@@ -95,12 +94,19 @@ public class Progress extends GameActivity implements InputProcessor {
     }
 
     public void showAllWords(){
+        // Set word table starting height
         int lineOffset = WORLD_HEIGHT - topOffset;
+
         for (Word word : vocabulary.getWords()){
+            // Word.value1
             if (word.getCompleted()) spriteBatch.draw(tick, tableOffset - 50, lineOffset - 30, lineSpacing, lineSpacing);
             font.draw(spriteBatch, word.getValue1(), tableOffset, lineOffset);
+
+            // Word.value2
             if (word.getCompleted()) spriteBatch.draw(tick, tableOffset + wordSpacing - 50, lineOffset - lineSpacing, lineSpacing, lineSpacing);
             font.draw(spriteBatch, word.getValue2(), tableOffset + wordSpacing, lineOffset);
+
+            // Set offset for next word
             lineOffset -= lineSpacing;
         }
     }
@@ -111,6 +117,8 @@ public class Progress extends GameActivity implements InputProcessor {
             if (!word.getCompleted()) {
                 font.draw(spriteBatch, word.getValue1(), tableOffset, lineOffset);
                 font.draw(spriteBatch, word.getValue2(), tableOffset + wordSpacing, lineOffset);
+
+                // Set offset for next word
                 lineOffset -= lineSpacing;
             }
         }
@@ -120,7 +128,11 @@ public class Progress extends GameActivity implements InputProcessor {
     public void render() {
         spriteBatch.begin();
         spriteBatch.draw(background, 0, 0, camera.viewportWidth, camera.viewportHeight);
+
+        // Chose words display
         if (showRemaining) { showRemainingWords(); }else { showAllWords(); }
+
+        // Show buttons
         spriteBatch.draw(back, BACK_BUTTON_LOCATION.x, BACK_BUTTON_LOCATION.y, BACK_BUTTON_SIZE.x, BACK_BUTTON_SIZE.y);
         spriteBatch.draw(refresh, REFRESH_BUTTON_LOCATION.x, REFRESH_BUTTON_LOCATION.y, REFRESH_BUTTON_SIZE.x, REFRESH_BUTTON_SIZE.y);
         spriteBatch.end();
