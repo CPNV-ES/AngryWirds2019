@@ -150,7 +150,6 @@ public class Play extends GameActivity implements InputProcessor {
                 Pig p = (Pig)hit;
                 if (p.getWord().getId() == board.getWordId()) { // Correct answer
                     words.addWord(p.getWord().getValue1(), p.getWord().getValue2());
-                    Gdx.app.log("TEST", p.getWord().getValue2());
                     scoreBoard.scoreChange(SCORE_BUMP_SUCCESS);
                     p.setWord(vocabulary.pickAWord());
                     board.setWord(scenery.pickAWord());
