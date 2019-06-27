@@ -16,10 +16,14 @@ public final class Scenery {
 
     private ArrayList<PhysicalObject> scene;
     private ArrayList<Pig> pigs; // keep a filtered list to speed un word selection
+    private ArrayList<DisplayWord> displayWords;
+    private ArrayList<DisplayWord> scene2;
 
     public Scenery() {
         scene = new ArrayList<PhysicalObject>();
         pigs = new ArrayList<Pig>();
+        displayWords = new ArrayList<DisplayWord>();
+        scene2 = new ArrayList<DisplayWord>();
     }
 
     public void addElement (PhysicalObject el) throws Exception
@@ -32,11 +36,18 @@ public final class Scenery {
             pigs.add((Pig)el);
     }
 
+    public void addDisplayWord (DisplayWord w) throws Exception
+    {
+        displayWords.add(w);
+        scene2.add(w);
+    }
+
     public void draw(Batch batch)
     {
         for (PhysicalObject p : scene) p.draw(batch);
     }
 
+    public void drawWord(Batch batch) {for (DisplayWord w : scene2) w.draw(batch); }
     /**
      * Returns the object of the scenary that object o has hit (null if none)
      * @param o
