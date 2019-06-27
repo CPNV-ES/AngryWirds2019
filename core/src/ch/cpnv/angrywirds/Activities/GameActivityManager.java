@@ -17,9 +17,7 @@ public class GameActivityManager {
         gameActivities.push(gameActivity);
     }
 
-    public void pop() {
-        gameActivities.pop();
-    }
+    public void pop() { gameActivities.pop(); }
 
     public void handleInput() {
         gameActivities.peek().handleInput();

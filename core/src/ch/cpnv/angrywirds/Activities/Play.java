@@ -55,12 +55,13 @@ public class Play extends GameActivity implements InputProcessor {
 
     private Queue<Touch> actions;
     private Vocabulary vocabulary; // The vocabulary we train
-
+    public Vocabulary vocabularyCkecked; // The vocabulary we train
     public Play() {
         super();
 
         babble = new ArrayList<Bubble>();
-        vocabulary = VocProvider.vocabularies.get(0); // hardcoded for now
+        vocabulary = VocProvider.vocabularies.get(0);
+        vocabularyCkecked = VocProvider.vocabularies.get(0);
 
         background = new Texture(Gdx.files.internal("background.png"));
         slingshot1 = new Texture(Gdx.files.internal("slingshot1.png"));
@@ -125,7 +126,7 @@ public class Play extends GameActivity implements InputProcessor {
 
                     Button button = scenery.buttonTouched(action.point.x, action.point.y);
                     if (button != null)
-                        Gdx.app.log("ANGRY", "Button clique");
+                        AngryWirds.gameActivityManager.push(new ReminingWords(vocabulary,vocabularyCkecked));
 
                     Pig piggy = scenery.pigTouched(action.point.x, action.point.y);
                     if (piggy != null)
@@ -159,7 +160,8 @@ public class Play extends GameActivity implements InputProcessor {
                 scoreBoard.scoreChange(-((TNT) hit).getNegativePoints());
             } else if (c.equals("Pig")) {
                 Pig p = (Pig)hit;
-                if (p.getWord().getId() == board.getWordId()) { // Correct answer
+                if (p.getWord().getId() == board.getWordId()) {// Correct answer
+                    vocabularyCkecked.addWord(p.getWord());
                     scoreBoard.scoreChange(SCORE_BUMP_SUCCESS);
                     p.setWord(vocabulary.pickAWord());
                     board.setWord(scenery.pickAWord());
