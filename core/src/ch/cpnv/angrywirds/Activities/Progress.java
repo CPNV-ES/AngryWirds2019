@@ -24,6 +24,7 @@ public class Progress extends GameActivity implements InputProcessor {
     private Texture back;
     private Texture tick;
     private Texture refresh;
+    private Texture arrow;
     private BitmapFont font;
 
     private Vocabulary vocabulary;
@@ -61,6 +62,7 @@ public class Progress extends GameActivity implements InputProcessor {
         back = new Texture(Gdx.files.internal("back.png"));
         tick = new Texture(Gdx.files.internal("tick.png"));
         refresh = new Texture(Gdx.files.internal("refresh.png"));
+        arrow = new Texture(Gdx.files.internal("arrow.png"));
 
         this.showRemaining = false;
         Gdx.input.setInputProcessor(this);
