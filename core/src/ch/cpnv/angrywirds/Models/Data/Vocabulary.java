@@ -31,4 +31,5 @@ public class Vocabulary {
     public Word pickAWord() {
         return words.get(AngryWirds.alea.nextInt(words.size()));
     }
+    public ArrayList<Word> getWords(){ return  words ;}
 }

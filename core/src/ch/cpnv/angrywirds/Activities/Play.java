@@ -2,9 +2,19 @@ package ch.cpnv.angrywirds.Activities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -42,7 +52,6 @@ public class Play extends GameActivity implements InputProcessor {
     private Bird tweety;
     private Wasp waspy;
     private ArrayList<Bubble> babble;
-
     private Texture background;
     private Texture slingshot1;
     private Texture slingshot2;
@@ -50,13 +59,11 @@ public class Play extends GameActivity implements InputProcessor {
     private ScoreBoard scoreBoard;
     private RubberBand rubberBand1;
     private RubberBand rubberBand2;
-
     private Queue<Touch> actions;
     private Vocabulary vocabulary; // The vocabulary we train
 
     public Play() {
         super();
-
         babble = new ArrayList<Bubble>();
         vocabulary = VocProvider.vocabularies.get(0); // hardcoded for now
 
@@ -98,6 +105,9 @@ public class Play extends GameActivity implements InputProcessor {
 
         Gdx.input.setInputProcessor(this);
         actions = new LinkedList<Touch>(); // User inputs are queued in here when events fire, handleInput processes them
+
+
+
 
     }
 
@@ -144,7 +154,10 @@ public class Play extends GameActivity implements InputProcessor {
             } else if (c.equals("Pig")) {
                 Pig p = (Pig)hit;
                 if (p.getWord().getId() == board.getWordId()) { // Correct answer
+                    Gdx.app.log("word","Before :" + p.getWord().getCorrect());
                     scoreBoard.scoreChange(SCORE_BUMP_SUCCESS);
+                    p.getWord().setCorrect();
+                    Gdx.app.log("word","After :" + p.getWord().getCorrect());
                     p.setWord(vocabulary.pickAWord());
                     board.setWord(scenery.pickAWord());
                 } else {
@@ -198,6 +211,9 @@ public class Play extends GameActivity implements InputProcessor {
         scenery.draw(spriteBatch);
         spriteBatch.draw(slingshot2, SLINGSHOT_OFFSET, FLOOR_HEIGHT, SLINGSHOT_WIDTH, SLINGSHOT_HEIGHT);
         spriteBatch.end();
+
+
+
     }
 
     @Override
