@@ -15,7 +15,7 @@ public class Button {
         sprite.setSize(width,height);
     }
 
-    public void update(Batch batch)
+    public void draw(Batch batch)
     {
         sprite.draw(batch);
     }

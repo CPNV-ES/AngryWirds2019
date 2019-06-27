@@ -57,6 +57,7 @@ public class Play extends GameActivity implements InputProcessor {
 
     private Queue<Touch> actions;
     private Vocabulary vocabulary; // The vocabulary we train
+    public static ArrayList<Word> foundWords;
 
     public Play() {
         super();
@@ -69,6 +70,7 @@ public class Play extends GameActivity implements InputProcessor {
         slingshot2 = new Texture(Gdx.files.internal("slingshot2.png"));
         button = new Button(new Texture(Gdx.files.internal("button.png")),0,0,300,150);
         goToProgess = false;
+        foundWords = new ArrayList<Word>();
 
         tweety = new Bird();
         tweety.freeze(); // it won't fly until we launch
@@ -156,6 +158,8 @@ public class Play extends GameActivity implements InputProcessor {
                 Pig p = (Pig) hit;
                 if (p.getWord().getId() == board.getWordId()) { // Correct answer
                     scoreBoard.scoreChange(SCORE_BUMP_SUCCESS);
+                    foundWords.add(new Word(p.getWord().getId(),p.getWord().getValue1(),p.getWord().getValue2()));
+                    Gdx.app.log("TEST",foundWords.toString());
                     p.setWord(vocabulary.pickAWord());
                     board.setWord(scenery.pickAWord());
                 } else {
@@ -166,13 +170,13 @@ public class Play extends GameActivity implements InputProcessor {
         }
 
         // --------- Wasp
-        waspy.accelerate(dt);
+        /*waspy.accelerate(dt);
         waspy.move(dt);
         if (tweety.collidesWith(waspy)) {
             scoreBoard.scoreChange(-100);
             AngryWirds.gameActivityManager.push(new GameOver());
         }
-        if (tweety.getX() > WORLD_WIDTH - Bird.WIDTH) tweety.reset();
+        if (tweety.getX() > WORLD_WIDTH - Bird.WIDTH) tweety.reset();*/
 
         // --------- Bubbles
         for (int i = babble.size() - 1; i >= 0; i--) { // we go reverse, so that removing items does not affect the rest of the loop
@@ -202,7 +206,7 @@ public class Play extends GameActivity implements InputProcessor {
         spriteBatch.draw(background, 0, 0, camera.viewportWidth, camera.viewportHeight);
         board.draw(spriteBatch);
         scoreBoard.draw(spriteBatch);
-        button.update(spriteBatch);
+        button.draw(spriteBatch);
         spriteBatch.draw(slingshot1, SLINGSHOT_OFFSET, FLOOR_HEIGHT, SLINGSHOT_WIDTH, SLINGSHOT_HEIGHT);
         if (tweety.isFrozen()) // Some things are only displayed while aiming
         {
