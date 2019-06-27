@@ -120,6 +120,9 @@ public class Play extends GameActivity implements InputProcessor {
                         tweety.setX(action.point.x);
                         tweety.setY(action.point.y);
                     }
+                    if (action.point.x > 0 && action.point.x < 50 && action.point.y > 0 && action.point.x < 100) {
+                        AngryWirds.gameActivityManager.push(new Progress());
+                    }
 
                     Pig piggy = scenery.pigTouched(action.point.x, action.point.y);
                     if (piggy != null)

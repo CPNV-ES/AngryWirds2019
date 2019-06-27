@@ -1,29 +1,23 @@
 package ch.cpnv.angrywirds.Activities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
+import ch.cpnv.angrywirds.AngryWirds;
 import ch.cpnv.angrywirds.Models.Data.Vocabulary;
 import ch.cpnv.angrywirds.Models.Data.Word;
-import ch.cpnv.angrywirds.Models.Stage.ScoreBoard;
-import ch.cpnv.angrywirds.Models.Stage.Title;
 import ch.cpnv.angrywirds.Providers.VocProvider;
 
-import static javax.print.attribute.standard.Chromaticity.COLOR;
 
-public class Progress extends GameActivity {
+public class Progress extends GameActivity  implements InputProcessor {
     public static final int SPACE_BETWEEN = 50;
 
     //public static final int WORLD_WIDTH = 1600;
@@ -36,6 +30,7 @@ public class Progress extends GameActivity {
     private BitmapFont wordFont;
     private BitmapFont title;
     private int YPos;
+    private Queue<Touch> actions;
     public Progress()
     {
         super();
@@ -48,9 +43,24 @@ public class Progress extends GameActivity {
         int position = 0;
          wordFont = new BitmapFont();
          wordFont.getData().setScale(2,2);
+        Gdx.input.setInputProcessor(this);
+        actions = new LinkedList<Touch>(); // User inputs are queued in here when events fire, handleInput processes them
     }
     @Override
-    public void handleInput() {}
+    public void handleInput() {
+
+        Touch action;
+        while ((action = actions.poll()) != null) {
+            switch (action.type) {
+                case down:
+                    if (action.point.x > 0 && action.point.x < 50 && action.point.y > 0 && action.point.x < 100) {
+                        AngryWirds.gameActivityManager.pop();
+                    }
+                    break;
+            }
+        }
+
+    }
     public void update(float dt) {
 
     }
@@ -78,10 +88,51 @@ public class Progress extends GameActivity {
             wordFont.draw(spriteBatch,word.getValue1(),WORLD_WIDTH/3 -50,YPos - (35*pos));
             wordFont.draw(spriteBatch,word.getValue2(),WORLD_WIDTH/3*2 -50,YPos - (35*pos));
 
-            Gdx.app.log("pos",Integer.toString(YPos));
+
         }
 
         title.draw(spriteBatch, "Progression", WORLD_WIDTH/2 - 75, WORLD_HEIGHT -25);
         spriteBatch.end();
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        Vector3 pointTouched = camera.unproject(new Vector3(screenX, screenY, 0)); // Convert from screen coordinates to camera coordinates
+        actions.add(new Touch(pointTouched, Touch.Type.down));
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
     }
 }

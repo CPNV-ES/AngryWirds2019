@@ -46,7 +46,7 @@ public class Welcome extends GameActivity{
             splashTime -= dt;
         else
             if (VocProvider.status == VocProvider.Status.ready)
-                AngryWirds.gameActivityManager.push(new Progress());
+                AngryWirds.gameActivityManager.push(new Play());
     }
 
     @Override
