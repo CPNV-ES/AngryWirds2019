@@ -33,6 +33,8 @@ public class Play extends GameActivity implements InputProcessor {
     private static final int SLINGSHOT_OFFSET = 100; // from left edge
     public static final int TWEETY_START_X = SLINGSHOT_OFFSET + (SLINGSHOT_WIDTH - Bird.WIDTH) / 2;
     public static final int TWEETY_START_Y = FLOOR_HEIGHT + SLINGSHOT_HEIGHT - Bird.HEIGHT;
+    private static final Vector2 PROGRESS_BUTTON_LOCATION = new Vector2(0,0);
+    private static final Vector2 PROGRESS_BUTTON_SIZE = new Vector2(100,100);
     private static final float ELASTICITY = 6f;
     private final int SCORE_BUMP_SUCCESS = 7;
     private final int SCORE_BUMP_FAIL = 1;
@@ -46,6 +48,7 @@ public class Play extends GameActivity implements InputProcessor {
     private Texture background;
     private Texture slingshot1;
     private Texture slingshot2;
+    private Texture checklist;
     private Board board;
     private ScoreBoard scoreBoard;
     private RubberBand rubberBand1;
@@ -63,6 +66,7 @@ public class Play extends GameActivity implements InputProcessor {
         background = new Texture(Gdx.files.internal("background.png"));
         slingshot1 = new Texture(Gdx.files.internal("slingshot1.png"));
         slingshot2 = new Texture(Gdx.files.internal("slingshot2.png"));
+        checklist = new Texture(Gdx.files.internal("checklist.png"));
 
         tweety = new Bird();
         tweety.freeze(); // it won't fly until we launch
@@ -120,6 +124,11 @@ public class Play extends GameActivity implements InputProcessor {
                         tweety.setSpeed(new Vector2(100 + (TWEETY_START_X - action.point.x) * ELASTICITY, 100 + (TWEETY_START_Y - action.point.y) * ELASTICITY));
                         tweety.unFreeze();
                     }
+                    // Clicked on progress button
+                    if(action.point.x >= PROGRESS_BUTTON_LOCATION.x && action.point.x <= PROGRESS_BUTTON_LOCATION.x + PROGRESS_BUTTON_SIZE.x
+                    && action.point.y >= PROGRESS_BUTTON_LOCATION.y && action.point.y <= PROGRESS_BUTTON_LOCATION.y + PROGRESS_BUTTON_SIZE.y){
+                        AngryWirds.gameActivityManager.push(new Progress());
+                    }
                     break;
                 case drag:
                     if (tweety.isFrozen() && action.point.x < TWEETY_START_X && action.point.y >= FLOOR_HEIGHT && action.point.y < TWEETY_START_Y) {
@@ -161,6 +170,7 @@ public class Play extends GameActivity implements InputProcessor {
         if (tweety.collidesWith(waspy)) {
             scoreBoard.scoreChange(-100);
             AngryWirds.gameActivityManager.push(new GameOver());
+            return;
         }
         if (tweety.getX() > WORLD_WIDTH - Bird.WIDTH) tweety.reset();
 
@@ -198,6 +208,7 @@ public class Play extends GameActivity implements InputProcessor {
         waspy.draw(spriteBatch);
         scenery.draw(spriteBatch);
         spriteBatch.draw(slingshot2, SLINGSHOT_OFFSET, FLOOR_HEIGHT, SLINGSHOT_WIDTH, SLINGSHOT_HEIGHT);
+        spriteBatch.draw(checklist, PROGRESS_BUTTON_LOCATION.x, PROGRESS_BUTTON_LOCATION.y, PROGRESS_BUTTON_SIZE.x, PROGRESS_BUTTON_SIZE.y);
         spriteBatch.end();
     }
 
