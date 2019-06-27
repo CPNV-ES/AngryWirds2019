@@ -67,16 +67,36 @@ public class Progress extends GameActivity implements InputProcessor {
                     notFoundWords.add(new Word(w.getId(), w.getValue1(), w.getValue2()));
                 }
             }
+        }else{
+            notFoundWords = words;
         }
 
         BitmapFont myFont = new BitmapFont(Gdx.files.internal("table.fnt"));
+        myFont.getData().setScale(1.5f);
         label1Style.font = myFont;
         label1Style.fontColor = Color.RED;
 
         for (Word w : words){
-            table.add(new Label(w.getValue1(), label1Style));
-            table.add(new Label(w.getValue2(), label1Style));
-            table.row();
+            boolean found = false;
+            for (Word fw : foundWords){
+                if (fw.getId() == w.getId()) {
+                    found = true;
+                }
+            }
+            if(found){
+                Gdx.app.log("I found", w.getValue1());
+                label1Style.fontColor.set(Color.GREEN);
+                table.add(new Label(w.getValue1(), label1Style));
+                table.add(new Label(w.getValue2(), label1Style));
+                table.row();
+            }
+            else{
+                label1Style.fontColor.set(Color.RED);
+                table.add(new Label(w.getValue1(), label1Style));
+                table.add(new Label(w.getValue2(), label1Style));
+                table.row();
+            }
+
         }
 
 
@@ -92,15 +112,13 @@ public class Progress extends GameActivity implements InputProcessor {
             switch (action.type) {
                 case down:
                     if (swapView.getBoundingRectangle().contains(action.point.x, action.point.y)) {
-                        table = new Table();
+                        table.clear();
                         for (Word w : notFoundWords) {
                             table.add(new Label(w.getValue1(), label1Style));
                             table.add(new Label(w.getValue2(), label1Style));
                             table.row();
                         }
                         table.setPosition(400, 850);
-                        stage.clear();
-                        stage.addActor(table);
                     } else if (backButton.getBoundingRectangle().contains(action.point.x, action.point.y)) {
                         goToPlay = true;
                     }
@@ -111,7 +129,6 @@ public class Progress extends GameActivity implements InputProcessor {
 
     @Override
     public void update(float dt) {
-        Gdx.app.log("INPUT", actions.toString());
         if(goToPlay){
             AngryWirds.gameActivityManager.pop();
             AngryWirds.gameActivityManager.pop();
