@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import java.util.ArrayList;
+
 import ch.cpnv.angrywirds.AngryWirds;
 import ch.cpnv.angrywirds.Models.Stage.Button;
 import ch.cpnv.angrywirds.Models.Stage.Progress;
@@ -13,16 +15,15 @@ import ch.cpnv.angrywirds.Models.Stage.Progress;
 public class Menu extends GameActivity implements InputProcessor {
 
     private Texture background;
-    //private ArrayList<Button> buttons = new ArrayList<Button>();
-    private Button buttons;
+    private ArrayList<Button> buttons = new ArrayList<Button>();
+    //private Button buttons;
     private Progress progress;
 
     public Menu() {
         super();
         background = new Texture(Gdx.files.internal("background.png"));
-        buttons = new Button(0,100, "Back", 0);
-        //progress = new Progress(word.getValue1(), word.getValue2());
-        //buttons.add(new Button(WORLD_WIDTH/2+250, pos, "Bird 2", 0));
+        buttons.add(new Button(0,100, "Back", 0));
+        buttons.add(new Button(1280,100, "Tri", 0));
         progress = new Progress();
         Gdx.input.setInputProcessor(this);
     }
@@ -35,11 +36,11 @@ public class Menu extends GameActivity implements InputProcessor {
     public void render() {
         spriteBatch.begin();
         spriteBatch.draw(background, 0, 0, camera.viewportWidth, camera.viewportHeight);
-        buttons.draw(spriteBatch);
+        //buttons.draw(spriteBatch);
         progress.draw(spriteBatch);
-        /*for (Button button: buttons){
+        for (Button button: buttons){
             button.draw(spriteBatch);
-        }*/
+        }
         spriteBatch.end();
     }
 
@@ -67,8 +68,10 @@ public class Menu extends GameActivity implements InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         Vector3 pointTouched = camera.unproject(new Vector3(screenX, screenY, 0)); // Convert from screen coordinates to camera coordinates
-        if(buttons.getSprite().getBoundingRectangle().contains(new Vector2(pointTouched.x, pointTouched.y))){
-            AngryWirds.gameActivityManager.pop();
+        for (Button btn : buttons){
+            if (btn.getSprite().getBoundingRectangle().contains(new Vector2(pointTouched.x, pointTouched.y))) {
+                AngryWirds.gameActivityManager.pop();
+            }
         }
         return false;
     }
