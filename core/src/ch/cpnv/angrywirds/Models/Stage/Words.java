@@ -15,6 +15,7 @@ public class Words {
     private ArrayList<String> frenchWords = new ArrayList<String>();
     private ArrayList<String> englishWords = new ArrayList<String>();
     private BitmapFont font;
+    private BitmapFont found_font;
     private final int LINE_HEIGHT = 40;
     private boolean vue = false;
     private Vocabulary vocabulary; // The vocabulary we train
@@ -23,6 +24,10 @@ public class Words {
         font = new BitmapFont();
         font.setColor(Color.BLACK);
         font.getData().setScale(2);
+
+        found_font = new BitmapFont();
+        found_font.setColor(Color.RED);
+        found_font.getData().setScale(2);
         vocabulary = VocProvider.vocabularies.get(0); // hardcoded for now
 
 //        frenchWords.add("Voiture");
@@ -53,9 +58,9 @@ public class Words {
                 for (String s : frenchWords){
                     if(w.getValue1() == s) //Mot trouvé
                     {
-                        font.draw(batch, "Trouvé", GameActivity.WORLD_WIDTH/4, GameActivity.WORLD_HEIGHT-200-vocabulary.getWords().indexOf(w)*LINE_HEIGHT);
-                        font.draw(batch, w.getValue1(), GameActivity.WORLD_WIDTH/3, GameActivity.WORLD_HEIGHT-200-vocabulary.getWords().indexOf(w)*LINE_HEIGHT);
-                        font.draw(batch, w.getValue2(), GameActivity.WORLD_WIDTH/3*2, GameActivity.WORLD_HEIGHT-200-vocabulary.getWords().indexOf(w)*LINE_HEIGHT);
+                        found_font.draw(batch, "Trouvé", GameActivity.WORLD_WIDTH/4, GameActivity.WORLD_HEIGHT-200-vocabulary.getWords().indexOf(w)*LINE_HEIGHT);
+                        found_font.draw(batch, w.getValue1(), GameActivity.WORLD_WIDTH/3, GameActivity.WORLD_HEIGHT-200-vocabulary.getWords().indexOf(w)*LINE_HEIGHT);
+                        found_font.draw(batch, w.getValue2(), GameActivity.WORLD_WIDTH/3*2, GameActivity.WORLD_HEIGHT-200-vocabulary.getWords().indexOf(w)*LINE_HEIGHT);
                     } else if(frenchWords.size()-1 == frenchWords.indexOf(s)) { // Si c'est le dernier mot, il n'as pas été trouvé
                         font.draw(batch, w.getValue1(), GameActivity.WORLD_WIDTH/3, GameActivity.WORLD_HEIGHT-200-vocabulary.getWords().indexOf(w)*LINE_HEIGHT);
                         font.draw(batch, w.getValue2(), GameActivity.WORLD_WIDTH/3*2, GameActivity.WORLD_HEIGHT-200-vocabulary.getWords().indexOf(w)*LINE_HEIGHT);
