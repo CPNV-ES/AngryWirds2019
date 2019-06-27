@@ -28,6 +28,20 @@ public class Vocabulary {
         words.add(w);
     }
 
+    public void markword(Word w)
+    {
+        w.setMarked(true);
+    }
+
+
+    public void removeWord(int index) {
+        words.remove(index);
+    }
+    public ArrayList<Word> getWords() {
+        return words;
+    }
+
+
     public Word pickAWord() {
         return words.get(AngryWirds.alea.nextInt(words.size()));
     }
