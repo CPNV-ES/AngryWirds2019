@@ -27,6 +27,8 @@ import ch.cpnv.angrywirds.Providers.VocProvider;
 
 public class Play extends GameActivity implements InputProcessor {
 
+    private static final boolean DEBUG_MODE = true;
+
     public static final int FLOOR_HEIGHT = 120;
     private static final int SLINGSHOT_WIDTH = 75;
     private static final int SLINGSHOT_HEIGHT = 225;
@@ -118,7 +120,9 @@ public class Play extends GameActivity implements InputProcessor {
                     Pig piggy = scenery.pigTouched(action.point.x, action.point.y);
                     if (piggy != null) {
                         babble.add(new Bubble(piggy.getPosition().x, piggy.getPosition().y, piggy.getWordValue(), 2));
-                        piggy.getWord().setCompleted();
+
+                        // Used to test Progress activity
+                        if (DEBUG_MODE) piggy.getWord().setCompleted();
                     }
                     break;
                 case up:
