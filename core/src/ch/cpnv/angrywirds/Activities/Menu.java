@@ -6,28 +6,20 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-import java.util.ArrayList;
-
 import ch.cpnv.angrywirds.AngryWirds;
-import ch.cpnv.angrywirds.Models.Data.Vocabulary;
-import ch.cpnv.angrywirds.Models.Data.Word;
 import ch.cpnv.angrywirds.Models.Stage.Button;
 import ch.cpnv.angrywirds.Models.Stage.Progress;
-import ch.cpnv.angrywirds.Providers.VocProvider;
 
 public class Menu extends GameActivity implements InputProcessor {
 
     private Texture background;
     //private ArrayList<Button> buttons = new ArrayList<Button>();
     private Button buttons;
-    private Word word;
     private Progress progress;
 
     public Menu() {
         super();
         background = new Texture(Gdx.files.internal("background.png"));
-
-        int pos = 350;
         buttons = new Button(0,100, "Back", 0);
         //progress = new Progress(word.getValue1(), word.getValue2());
         //buttons.add(new Button(WORLD_WIDTH/2+250, pos, "Bird 2", 0));
