@@ -66,6 +66,7 @@ public final class Scenery {
         return null;
     }
 
+
     /**
      *  A smart scenery is capable of returning one of the words that is hidden in one of its pigs
      * @return

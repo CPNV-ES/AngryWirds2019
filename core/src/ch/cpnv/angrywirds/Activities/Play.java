@@ -15,6 +15,7 @@ import ch.cpnv.angrywirds.Models.Data.Vocabulary;
 import ch.cpnv.angrywirds.Models.Data.Word;
 import ch.cpnv.angrywirds.Models.Stage.Bird;
 import ch.cpnv.angrywirds.Models.Stage.Board;
+import ch.cpnv.angrywirds.Models.Stage.Bourd;
 import ch.cpnv.angrywirds.Models.Stage.Bubble;
 import ch.cpnv.angrywirds.Models.Stage.PhysicalObject;
 import ch.cpnv.angrywirds.Models.Stage.Pig;
@@ -54,7 +55,7 @@ public class Play extends GameActivity implements InputProcessor {
     private Queue<Touch> actions;
     private Vocabulary vocabulary; // The vocabulary we train
 
-    public Play() {
+    public Play(Bird bird) {
         super();
 
         babble = new ArrayList<Bubble>();
@@ -64,8 +65,12 @@ public class Play extends GameActivity implements InputProcessor {
         slingshot1 = new Texture(Gdx.files.internal("slingshot1.png"));
         slingshot2 = new Texture(Gdx.files.internal("slingshot2.png"));
 
-        tweety = new Bird();
+
+        tweety = bird;
         tweety.freeze(); // it won't fly until we launch
+
+
+
         rubberBand1 = new RubberBand();
         rubberBand2 = new RubberBand();
 
@@ -139,9 +144,15 @@ public class Play extends GameActivity implements InputProcessor {
         if (hit != null) {
             String c = hit.getClass().getSimpleName();
             // elsifs instead of switch, just to keep out of JDK version trouble
-            if (c.equals("TNT")) {
+            if (c.equals("TNT") && tweety.getName() == "bird") {
                 scoreBoard.scoreChange(-((TNT) hit).getNegativePoints());
-            } else if (c.equals("Pig")) {
+                Gdx.app.log("HAHA", tweety.getName()+"   c'est ici ? ");
+
+            }
+            else if (c.equals("TNT") && tweety.getName() == "bourd"){
+                tweety.rollY();
+            }
+            else if (c.equals("Pig")) {
                 Pig p = (Pig)hit;
                 if (p.getWord().getId() == board.getWordId()) { // Correct answer
                     scoreBoard.scoreChange(SCORE_BUMP_SUCCESS);
@@ -154,6 +165,13 @@ public class Play extends GameActivity implements InputProcessor {
             tweety.reset();
         }
 
+        if (tweety.getName() == "bird")
+        {
+            if (tweety.getX() > WORLD_WIDTH - Bird.WIDTH) tweety.reset();
+        }else if(tweety.getName() == "bourd")
+        {
+            if (tweety.getX() > WORLD_WIDTH - Bird.WIDTH) tweety.bouncX();
+        }
         // --------- Wasp
         waspy.accelerate(dt);
         waspy.move(dt);
@@ -161,7 +179,7 @@ public class Play extends GameActivity implements InputProcessor {
             scoreBoard.scoreChange(-100);
             AngryWirds.gameActivityManager.push(new GameOver());
         }
-        if (tweety.getX() > WORLD_WIDTH - Bird.WIDTH) tweety.reset();
+
 
         // --------- Bubbles
         for (int i = babble.size() - 1; i >= 0; i--) { // we go reverse, so that removing items does not affect the rest of the loop
@@ -175,8 +193,11 @@ public class Play extends GameActivity implements InputProcessor {
 
         // --------- Scoreboard
         scoreBoard.update(dt);
-        if (scoreBoard.gameOver())
+        if (scoreBoard.gameOver()) {
+            tweety.setPosition(0, 0);
+            Gdx.app.log("HAHA", tweety + "Wazo");
             AngryWirds.gameActivityManager.push(new GameOver());
+        }
     }
 
     @Override
@@ -202,6 +223,25 @@ public class Play extends GameActivity implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
+        float delta = Gdx.graphics.getDeltaTime();
+        int x = 10;
+            Gdx.app.log("HAHA", keycode+";");
+        if (keycode == 19)
+        {
+            tweety.moveUp(delta);
+        }
+        if (keycode == 20)
+        {
+            tweety.moveDown(delta);
+        }
+        if (keycode == 21)
+        {
+            tweety.moveLeft(delta);
+        }
+        if (keycode == 22)
+        {
+            tweety.moveRight(delta);
+        }
         return false;
     }
 
@@ -218,6 +258,11 @@ public class Play extends GameActivity implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 pointTouched = camera.unproject(new Vector3(screenX, screenY, 0)); // Convert from screen coordinates to camera coordinates
+        if (screenX > 1000 )
+            Gdx.app.log("HAHA", screenX+";");
+        else if (screenX < 150 )
+            Gdx.app.log("HAHA", screenY+";");
+
         actions.add(new Touch(pointTouched, Touch.Type.down));
         return false;
     }

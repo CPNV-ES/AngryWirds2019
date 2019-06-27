@@ -51,6 +51,30 @@ public abstract class MovingObject extends PhysicalObject {
         speed.y = 0;
     }
 
+    public final void moveUp(float dt)
+    {
+
+      translateY(15);
+    }
+    public final void moveDown(float dt)
+    {
+
+        translateY(-15);
+    }
+
+    public final void moveLeft(float dt)
+    {
+
+        translateX(-15);
+    }
+
+    public final void moveRight(float dt)
+    {
+
+        translateX(15);
+    }
+
+
     public void setSpeed(Vector2 speed) {
         this.speed = speed;
     }
