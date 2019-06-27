@@ -28,7 +28,7 @@ public class Progress extends GameActivity implements InputProcessor {
 
     private Vocabulary vocabulary;
 
-    private static final Vector2 BACK_BUTTON_LOCATION = new Vector2(0,0);
+    private static final Vector2 BACK_BUTTON_LOCATION = new Vector2(10,10);
     private static final Vector2 BACK_BUTTON_SIZE = new Vector2(100,100);
 
     private static final Vector2 REFRESH_BUTTON_SIZE = new Vector2(100,100);

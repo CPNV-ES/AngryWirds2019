@@ -35,7 +35,7 @@ public class Play extends GameActivity implements InputProcessor {
     private static final int SLINGSHOT_OFFSET = 100; // from left edge
     public static final int TWEETY_START_X = SLINGSHOT_OFFSET + (SLINGSHOT_WIDTH - Bird.WIDTH) / 2;
     public static final int TWEETY_START_Y = FLOOR_HEIGHT + SLINGSHOT_HEIGHT - Bird.HEIGHT;
-    private static final Vector2 PROGRESS_BUTTON_LOCATION = new Vector2(0,0);
+    private static final Vector2 PROGRESS_BUTTON_LOCATION = new Vector2(10,10);
     private static final Vector2 PROGRESS_BUTTON_SIZE = new Vector2(100,100);
     private static final float ELASTICITY = 6f;
     private final int SCORE_BUMP_SUCCESS = 7;
