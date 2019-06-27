@@ -23,6 +23,7 @@ import ch.cpnv.angrywirds.Models.Stage.Scenery;
 import ch.cpnv.angrywirds.Models.Stage.ScoreBoard;
 import ch.cpnv.angrywirds.Models.Stage.TNT;
 import ch.cpnv.angrywirds.Models.Stage.Wasp;
+import ch.cpnv.angrywirds.Models.Stage.Words;
 import ch.cpnv.angrywirds.Providers.VocProvider;
 
 public class Play extends GameActivity implements InputProcessor {
@@ -53,6 +54,8 @@ public class Play extends GameActivity implements InputProcessor {
 
     private Queue<Touch> actions;
     private Vocabulary vocabulary; // The vocabulary we train
+
+    private Words words;
 
     public Play() {
         super();
@@ -95,6 +98,8 @@ public class Play extends GameActivity implements InputProcessor {
 
         board = new Board(scenery.pickAWord()); // Put one word from a pig on the board
         scoreBoard = new ScoreBoard(70, 240);
+
+        words = new Words();
 
         Gdx.input.setInputProcessor(this);
         actions = new LinkedList<Touch>(); // User inputs are queued in here when events fire, handleInput processes them
@@ -144,6 +149,8 @@ public class Play extends GameActivity implements InputProcessor {
             } else if (c.equals("Pig")) {
                 Pig p = (Pig)hit;
                 if (p.getWord().getId() == board.getWordId()) { // Correct answer
+                    words.addWord(p.getWord().getValue1(), p.getWord().getValue2());
+                    Gdx.app.log("TEST", p.getWord().getValue2());
                     scoreBoard.scoreChange(SCORE_BUMP_SUCCESS);
                     p.setWord(vocabulary.pickAWord());
                     board.setWord(scenery.pickAWord());
@@ -219,7 +226,7 @@ public class Play extends GameActivity implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 pointTouched = camera.unproject(new Vector3(screenX, screenY, 0)); // Convert from screen coordinates to camera coordinates
         if (pointTouched.x < 115 && pointTouched.y < 115)
-            AngryWirds.gameActivityManager.push(new Progress());
+            AngryWirds.gameActivityManager.push(new Progress(words));
         actions.add(new Touch(pointTouched, Touch.Type.down));
         return false;
     }

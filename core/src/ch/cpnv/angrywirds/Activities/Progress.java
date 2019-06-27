@@ -13,11 +13,11 @@ public class Progress extends GameActivity {
     private Title title;
     private Words words;
 
-    public Progress() {
+    public Progress(Words words) {
         super();
+        this.words = words;
         background = new Texture(Gdx.files.internal("progress.png"));
         title = new Title("Voici le progrès");
-        words = new Words();
     }
 
     @Override
@@ -34,8 +34,7 @@ public class Progress extends GameActivity {
     public void render() {
         spriteBatch.begin();
         spriteBatch.draw(background, 0, 0, camera.viewportWidth, camera.viewportHeight);
-        title.draw(spriteBatch);
-        spriteBatch.end();
         words.draw(spriteBatch);
+        spriteBatch.end();
     }
 }
