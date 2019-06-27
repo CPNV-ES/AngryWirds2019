@@ -25,6 +25,9 @@ public final class Pig extends PhysicalObject {
         return word.getValue2();
     }
 
+    public String getWordValue1() {
+        return word.getValue1();
+    }
     public Word getWord() { return word; }
 
     public void setWord(Word word) {
