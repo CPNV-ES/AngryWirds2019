@@ -147,6 +147,11 @@ public class Play extends GameActivity implements InputProcessor {
     }
 
     public void update(float dt) {
+        // Rebind inputProcessor
+        if (Gdx.input.getInputProcessor() != this) {
+            Gdx.input.setInputProcessor(this);
+        }
+
         // --------- Bird
         tweety.accelerate(dt);
         tweety.move(dt);

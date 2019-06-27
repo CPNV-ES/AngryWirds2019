@@ -76,7 +76,6 @@ public class Progress extends GameActivity implements InputProcessor {
                             && action.point.y >= BACK_BUTTON_LOCATION.y && action.point.y <= BACK_BUTTON_LOCATION.y + BACK_BUTTON_SIZE.y){
                         // We must re-push Play Acitivity because InputProcessor won't be usable
                         AngryWirds.gameActivityManager.pop();
-                        AngryWirds.gameActivityManager.pop();
                     }
 
                     // Clicked changeDisplay button
