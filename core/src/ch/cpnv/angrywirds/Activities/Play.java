@@ -16,6 +16,7 @@ import ch.cpnv.angrywirds.Models.Data.Word;
 import ch.cpnv.angrywirds.Models.Stage.Bird;
 import ch.cpnv.angrywirds.Models.Stage.Board;
 import ch.cpnv.angrywirds.Models.Stage.Bubble;
+import ch.cpnv.angrywirds.Models.Stage.Button;
 import ch.cpnv.angrywirds.Models.Stage.PhysicalObject;
 import ch.cpnv.angrywirds.Models.Stage.Pig;
 import ch.cpnv.angrywirds.Models.Stage.RubberBand;
@@ -42,6 +43,7 @@ public class Play extends GameActivity implements InputProcessor {
     private Bird tweety;
     private Wasp waspy;
     private ArrayList<Bubble> babble;
+    private Button buttonProgress;
 
     private Texture background;
     private Texture slingshot1;
@@ -68,6 +70,8 @@ public class Play extends GameActivity implements InputProcessor {
         tweety.freeze(); // it won't fly until we launch
         rubberBand1 = new RubberBand();
         rubberBand2 = new RubberBand();
+        buttonProgress = new Button(new Vector2(10, 10), 100, 100, "button_progress.png");
+
 
         waspy = new Wasp(new Vector2(WORLD_WIDTH / 2, WORLD_HEIGHT / 2), new Vector2(20, 20));
         scenery = new Scenery();
@@ -111,6 +115,11 @@ public class Play extends GameActivity implements InputProcessor {
                         tweety.setY(action.point.y);
                     }
 
+                    if (action.point.x < buttonProgress.getX() + buttonProgress.getWidth() && action.point.y < buttonProgress.getY() + buttonProgress.getHeight()) {
+
+                        AngryWirds.gameActivityManager.push(new Progress());
+                    }
+
                     Pig piggy = scenery.pigTouched(action.point.x, action.point.y);
                     if (piggy != null)
                         babble.add(new Bubble(piggy.getPosition().x, piggy.getPosition().y, piggy.getWordValue(), 2));
@@ -142,7 +151,7 @@ public class Play extends GameActivity implements InputProcessor {
             if (c.equals("TNT")) {
                 scoreBoard.scoreChange(-((TNT) hit).getNegativePoints());
             } else if (c.equals("Pig")) {
-                Pig p = (Pig)hit;
+                Pig p = (Pig) hit;
                 if (p.getWord().getId() == board.getWordId()) { // Correct answer
                     scoreBoard.scoreChange(SCORE_BUMP_SUCCESS);
                     p.setWord(vocabulary.pickAWord());
@@ -191,6 +200,7 @@ public class Play extends GameActivity implements InputProcessor {
             for (Bubble b : babble) b.draw(spriteBatch);
             rubberBand1.draw(spriteBatch);
         }
+        buttonProgress.draw(spriteBatch);
         tweety.draw(spriteBatch);
         if (tweety.isFrozen())
             rubberBand2.draw(spriteBatch);

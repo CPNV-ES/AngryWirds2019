@@ -1,5 +1,6 @@
 package ch.cpnv.angrywirds.Models.Stage;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -51,5 +52,4 @@ public class PhysicalObject extends Sprite {
     {
         return this.getRectangle().overlaps(o.getRectangle());
     }
-
 }
