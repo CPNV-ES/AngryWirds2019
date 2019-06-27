@@ -218,6 +218,8 @@ public class Play extends GameActivity implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 pointTouched = camera.unproject(new Vector3(screenX, screenY, 0)); // Convert from screen coordinates to camera coordinates
+        if (pointTouched.x < 115 && pointTouched.y < 115)
+            AngryWirds.gameActivityManager.push(new Progress());
         actions.add(new Touch(pointTouched, Touch.Type.down));
         return false;
     }
