@@ -16,8 +16,10 @@ import ch.cpnv.angrywirds.Models.Data.Word;
 import ch.cpnv.angrywirds.Models.Stage.Bird;
 import ch.cpnv.angrywirds.Models.Stage.Board;
 import ch.cpnv.angrywirds.Models.Stage.Bubble;
+import ch.cpnv.angrywirds.Models.Stage.Button;
 import ch.cpnv.angrywirds.Models.Stage.PhysicalObject;
 import ch.cpnv.angrywirds.Models.Stage.Pig;
+import ch.cpnv.angrywirds.Models.Stage.Progress;
 import ch.cpnv.angrywirds.Models.Stage.RubberBand;
 import ch.cpnv.angrywirds.Models.Stage.Scenery;
 import ch.cpnv.angrywirds.Models.Stage.ScoreBoard;
@@ -53,6 +55,8 @@ public class Play extends GameActivity implements InputProcessor {
 
     private Queue<Touch> actions;
     private Vocabulary vocabulary; // The vocabulary we train
+    private Button buttons;
+    private Progress progress;
 
     public Play() {
         super();
@@ -63,14 +67,23 @@ public class Play extends GameActivity implements InputProcessor {
         background = new Texture(Gdx.files.internal("background.png"));
         slingshot1 = new Texture(Gdx.files.internal("slingshot1.png"));
         slingshot2 = new Texture(Gdx.files.internal("slingshot2.png"));
+        buttons = new Button(0, 0, "Progress", 0);
 
         tweety = new Bird();
         tweety.freeze(); // it won't fly until we launch
         rubberBand1 = new RubberBand();
         rubberBand2 = new RubberBand();
+        progress = new Progress();
 
         waspy = new Wasp(new Vector2(WORLD_WIDTH / 2, WORLD_HEIGHT / 2), new Vector2(20, 20));
         scenery = new Scenery();
+
+        /*try{
+            scenery.addElement(new Button(200, 60, "Progress", new Vector2((WORLD_WIDTH * 2 / 3) + WORLD_WIDTH / 3, FLOOR_HEIGHT + 50)));
+        } catch (Exception e) {
+            Gdx.app.log("ANGRY", "Could not add btn to scenery");
+        }*/
+
         for (int i = 5; i < WORLD_WIDTH / 50; i++) {
             try {
                 scenery.addElement(new PhysicalObject(new Vector2(i * 50, FLOOR_HEIGHT), 50, 50, "block.png"));
@@ -196,6 +209,7 @@ public class Play extends GameActivity implements InputProcessor {
             rubberBand2.draw(spriteBatch);
         waspy.draw(spriteBatch);
         scenery.draw(spriteBatch);
+        buttons.draw(spriteBatch);
         spriteBatch.draw(slingshot2, SLINGSHOT_OFFSET, FLOOR_HEIGHT, SLINGSHOT_WIDTH, SLINGSHOT_HEIGHT);
         spriteBatch.end();
     }
@@ -219,6 +233,9 @@ public class Play extends GameActivity implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 pointTouched = camera.unproject(new Vector3(screenX, screenY, 0)); // Convert from screen coordinates to camera coordinates
         actions.add(new Touch(pointTouched, Touch.Type.down));
+        if(buttons.getSprite().getBoundingRectangle().contains(new Vector2(pointTouched.x, pointTouched.y))){
+            AngryWirds.gameActivityManager.push(new Menu());
+        }
         return false;
     }
 
