@@ -16,6 +16,7 @@ import ch.cpnv.angrywirds.Models.Data.Word;
 import ch.cpnv.angrywirds.Models.Stage.Bird;
 import ch.cpnv.angrywirds.Models.Stage.Board;
 import ch.cpnv.angrywirds.Models.Stage.Bubble;
+import ch.cpnv.angrywirds.Models.Stage.Button;
 import ch.cpnv.angrywirds.Models.Stage.PhysicalObject;
 import ch.cpnv.angrywirds.Models.Stage.Pig;
 import ch.cpnv.angrywirds.Models.Stage.RubberBand;
@@ -41,6 +42,7 @@ public class Play extends GameActivity implements InputProcessor {
     private Scenery scenery;
     private Bird tweety;
     private Wasp waspy;
+    private Button button;
     private ArrayList<Bubble> babble;
 
     private Texture background;
@@ -71,9 +73,12 @@ public class Play extends GameActivity implements InputProcessor {
 
         waspy = new Wasp(new Vector2(WORLD_WIDTH / 2, WORLD_HEIGHT / 2), new Vector2(20, 20));
         scenery = new Scenery();
+
         for (int i = 5; i < WORLD_WIDTH / 50; i++) {
             try {
                 scenery.addElement(new PhysicalObject(new Vector2(i * 50, FLOOR_HEIGHT), 50, 50, "block.png"));
+
+
             } catch (Exception e) {
                 Gdx.app.log("ANGRY", "Could not add block to scenery");
             }
@@ -91,6 +96,13 @@ public class Play extends GameActivity implements InputProcessor {
             } catch (Exception e) {
                 Gdx.app.log("ANGRY", "Could not add Pig to scenery");
             }
+        }
+        try {
+
+            scenery.addElement(new Button(new Vector2(10, 10), 50, 50, "scoreButton.jpg"));
+
+        } catch (Exception e) {
+            Gdx.app.log("ANGRY", "Could not add button to scenery");
         }
 
         board = new Board(scenery.pickAWord()); // Put one word from a pig on the board
@@ -110,6 +122,10 @@ public class Play extends GameActivity implements InputProcessor {
                         tweety.setX(action.point.x);
                         tweety.setY(action.point.y);
                     }
+
+                    Button button = scenery.buttonTouched(action.point.x, action.point.y);
+                    if (button != null)
+                        Gdx.app.log("ANGRY", "Button clique");
 
                     Pig piggy = scenery.pigTouched(action.point.x, action.point.y);
                     if (piggy != null)

@@ -65,6 +65,14 @@ public final class Scenery {
                     return (Pig)el; // must cast because el is declared as PhysicalObject
         return null;
     }
+    public Button buttonTouched(float x, float y)
+    {
+        for (PhysicalObject el : scene)
+            if (el.getClass().equals(Button.class)) // we only care about Pigs
+                if (el.getRectangle().contains(x,y))
+                    return (Button) el; // must cast because el is declared as PhysicalObject
+        return null;
+    }
 
     /**
      *  A smart scenery is capable of returning one of the words that is hidden in one of its pigs
