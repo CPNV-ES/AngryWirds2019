@@ -118,6 +118,7 @@ public class Play extends GameActivity implements InputProcessor {
                     Pig piggy = scenery.pigTouched(action.point.x, action.point.y);
                     if (piggy != null)
                         babble.add(new Bubble(piggy.getPosition().x, piggy.getPosition().y, piggy.getWordValue(), 2));
+                    piggy.getWord().setCompleted();
                     break;
                 case up:
                     if (tweety.isFrozen() && action.point.x < TWEETY_START_X && action.point.y >= FLOOR_HEIGHT && action.point.y < TWEETY_START_Y) {
