@@ -8,9 +8,19 @@ public class Word {
     private int id;
     private String value1;
     private String value2;
+    private boolean marked = false;
 
     public int getId() {
         return id;
+    }
+
+    public void setMarked(boolean marked) {
+        this.marked = marked;
+    }
+
+    public boolean marked()
+    {
+        return marked;
     }
 
     public String getValue1() {
@@ -26,5 +36,6 @@ public class Word {
         this.value1 = value1;
         this.value2 = value2;
     }
+
 
 }
