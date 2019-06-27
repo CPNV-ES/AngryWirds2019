@@ -3,14 +3,17 @@ package ch.cpnv.angrywirds.Activities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import java.awt.Button;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
 import ch.cpnv.angrywirds.AngryWirds;
+import ch.cpnv.angrywirds.Models.Data.PlayerVocabulary;
 import ch.cpnv.angrywirds.Models.Data.Vocabulary;
 import ch.cpnv.angrywirds.Models.Data.Word;
 import ch.cpnv.angrywirds.Models.Stage.Bird;
@@ -54,12 +57,25 @@ public class Play extends GameActivity implements InputProcessor {
 
     private Queue<Touch> actions;
     private Vocabulary vocabulary; // The vocabulary we train
+    private Vocabulary playerVocabulary; // Vocabulary played
+    private Word playerword;
+
+    private Sprite gobutton;
+
+
 
     public Play(Bird bird) {
         super();
 
+        // button ----------------
+        gobutton = new Sprite(new Texture("gobutton.png"));
+        gobutton.setBounds(0, 0,100,100);
+        gobutton.setOrigin(50,50);
+
+
         babble = new ArrayList<Bubble>();
         vocabulary = VocProvider.vocabularies.get(0); // hardcoded for now
+        playerVocabulary =  VocProvider.vocabularies.get(0);
 
         background = new Texture(Gdx.files.internal("background.png"));
         slingshot1 = new Texture(Gdx.files.internal("slingshot1.png"));
@@ -156,6 +172,17 @@ public class Play extends GameActivity implements InputProcessor {
                 Pig p = (Pig)hit;
                 if (p.getWord().getId() == board.getWordId()) { // Correct answer
                     scoreBoard.scoreChange(SCORE_BUMP_SUCCESS);
+
+                    Gdx.app.log("HAHA", p.getWordValue() +"p.get");
+                    Gdx.app.log("HAHA", "Mots AVANT");
+
+                    // remove the finded word from the list
+                    // playerVocabulary.removeWord(p.getWord().getId());
+
+                    // mark the word touched
+                    playerVocabulary.markword(p.getWord());
+                    //playerVocabulary.addWord(playerword);
+                   Gdx.app.log("HAHA", playerVocabulary +"MOTS");
                     p.setWord(vocabulary.pickAWord());
                     board.setWord(scenery.pickAWord());
                 } else {
@@ -218,6 +245,7 @@ public class Play extends GameActivity implements InputProcessor {
         waspy.draw(spriteBatch);
         scenery.draw(spriteBatch);
         spriteBatch.draw(slingshot2, SLINGSHOT_OFFSET, FLOOR_HEIGHT, SLINGSHOT_WIDTH, SLINGSHOT_HEIGHT);
+        gobutton.draw(spriteBatch);
         spriteBatch.end();
     }
 
@@ -225,7 +253,7 @@ public class Play extends GameActivity implements InputProcessor {
     public boolean keyDown(int keycode) {
         float delta = Gdx.graphics.getDeltaTime();
         int x = 10;
-            Gdx.app.log("HAHA", keycode+";");
+
         if (keycode == 19)
         {
             tweety.moveUp(delta);
@@ -242,6 +270,11 @@ public class Play extends GameActivity implements InputProcessor {
         {
             tweety.moveRight(delta);
         }
+        if(keycode == 50)
+        {
+
+        }
+
         return false;
     }
 
@@ -258,11 +291,12 @@ public class Play extends GameActivity implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 pointTouched = camera.unproject(new Vector3(screenX, screenY, 0)); // Convert from screen coordinates to camera coordinates
-        if (screenX > 1000 )
-            Gdx.app.log("HAHA", screenX+";");
-        else if (screenX < 150 )
-            Gdx.app.log("HAHA", screenY+";");
-
+        if (pointTouched.x >= 0 && pointTouched.x <= 60 && pointTouched.y >= 0 && pointTouched.y <= 60)
+        {
+            Gdx.app.log("HAHA", "Add VocView");
+            // bug, when you hit the correct word, but try to change to the vocabularry view after, the page won't be pushed correctly
+            AngryWirds.gameActivityManager.push(new VocView(playerVocabulary));
+        }
         actions.add(new Touch(pointTouched, Touch.Type.down));
         return false;
     }
