@@ -50,6 +50,7 @@ public class Progress extends GameActivity implements InputProcessor {
         scenery = new Scenery();
         try {
             scenery.addElement(new PhysicalObject(new Vector2(0, 0), 100, 100, "block.png"));
+            scenery.addElement(new PhysicalObject(new Vector2(GameActivity.WORLD_WIDTH-100, 0), 100, 100, "block.png"));
         } catch (Exception e) {
             Gdx.app.log("EXC", "Could not add menu to scenery");
         }
@@ -122,7 +123,7 @@ public class Progress extends GameActivity implements InputProcessor {
         }
 
         if (pointTouched.x >= GameActivity.WORLD_HEIGHT-100 && pointTouched.x >= GameActivity.WORLD_WIDTH-100) {
-            Gdx.app.log("TUTU", "Achievment");
+            wordProgresses = new ArrayList<WordProgress>();
         }
         return false;
     }
