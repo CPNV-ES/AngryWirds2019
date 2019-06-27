@@ -26,7 +26,7 @@ public class DisplayWord  {
     private void initBase(String message)
     {
         layout = new GlyphLayout();
-        font = FontProvider.h1;
+        font = FontProvider.h3;
         setText(message);
     }
 
