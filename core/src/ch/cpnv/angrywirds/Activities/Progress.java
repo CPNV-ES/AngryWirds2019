@@ -86,10 +86,22 @@ public class Progress extends GameActivity implements InputProcessor {
     public void showAllWords(){
         int lineOffset = WORLD_HEIGHT - topOffset;
         for (Word word : vocabulary.getWords()){
-            if (word.getCompleted()) spriteBatch.draw(tick, tableOffset - 50, lineOffset);
+            if (word.getCompleted()) spriteBatch.draw(tick, tableOffset - 50, lineOffset - 30, lineSpacing, lineSpacing);
             font.draw(spriteBatch, word.getValue1(), tableOffset, lineOffset);
+            if (word.getCompleted()) spriteBatch.draw(tick, tableOffset + wordSpacing - 50, lineOffset - lineSpacing, lineSpacing, lineSpacing);
             font.draw(spriteBatch, word.getValue2(), tableOffset + wordSpacing, lineOffset);
             lineOffset -= lineSpacing;
+        }
+    }
+
+    public void showRemainingWords(){
+        int lineOffset = WORLD_HEIGHT - topOffset;
+        for (Word word : vocabulary.getWords()){
+            if (!word.getCompleted()) {
+                font.draw(spriteBatch, word.getValue1(), tableOffset, lineOffset);
+                font.draw(spriteBatch, word.getValue2(), tableOffset + wordSpacing, lineOffset);
+                lineOffset -= lineSpacing;
+            }
         }
     }
 
@@ -97,8 +109,9 @@ public class Progress extends GameActivity implements InputProcessor {
     public void render() {
         spriteBatch.begin();
         spriteBatch.draw(background, 0, 0, camera.viewportWidth, camera.viewportHeight);
-        showAllWords();
+        if (showRemaining) { showRemainingWords(); }else { showAllWords(); }
         spriteBatch.draw(back, BACK_BUTTON_LOCATION.x, BACK_BUTTON_LOCATION.y, BACK_BUTTON_SIZE.x, BACK_BUTTON_SIZE.y);
+        spriteBatch.draw(refresh, REFRESH_BUTTON_LOCATION.x, REFRESH_BUTTON_LOCATION.y, REFRESH_BUTTON_SIZE.x, REFRESH_BUTTON_SIZE.y);
         spriteBatch.end();
     }
 
