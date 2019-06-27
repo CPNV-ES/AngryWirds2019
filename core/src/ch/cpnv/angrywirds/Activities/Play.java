@@ -16,6 +16,7 @@ import ch.cpnv.angrywirds.Models.Data.Word;
 import ch.cpnv.angrywirds.Models.Stage.Bird;
 import ch.cpnv.angrywirds.Models.Stage.Board;
 import ch.cpnv.angrywirds.Models.Stage.Bubble;
+import ch.cpnv.angrywirds.Models.Stage.Button;
 import ch.cpnv.angrywirds.Models.Stage.PhysicalObject;
 import ch.cpnv.angrywirds.Models.Stage.Pig;
 import ch.cpnv.angrywirds.Models.Stage.RubberBand;
@@ -42,6 +43,8 @@ public class Play extends GameActivity implements InputProcessor {
     private Bird tweety;
     private Wasp waspy;
     private ArrayList<Bubble> babble;
+    private Button button;
+    private boolean goToProgess;
 
     private Texture background;
     private Texture slingshot1;
@@ -50,6 +53,7 @@ public class Play extends GameActivity implements InputProcessor {
     private ScoreBoard scoreBoard;
     private RubberBand rubberBand1;
     private RubberBand rubberBand2;
+
 
     private Queue<Touch> actions;
     private Vocabulary vocabulary; // The vocabulary we train
@@ -63,6 +67,8 @@ public class Play extends GameActivity implements InputProcessor {
         background = new Texture(Gdx.files.internal("background.png"));
         slingshot1 = new Texture(Gdx.files.internal("slingshot1.png"));
         slingshot2 = new Texture(Gdx.files.internal("slingshot2.png"));
+        button = new Button(new Texture(Gdx.files.internal("button.png")),0,0,300,150);
+        goToProgess = false;
 
         tweety = new Bird();
         tweety.freeze(); // it won't fly until we launch
@@ -106,6 +112,11 @@ public class Play extends GameActivity implements InputProcessor {
         while ((action = actions.poll()) != null) {
             switch (action.type) {
                 case down:
+                    //Check if the button is pressed
+                    if(button.getBoundingRectangle().contains(action.point.x,action.point.y)){
+                        goToProgess = true;
+                    }
+
                     if (tweety.isFrozen() && action.point.x < TWEETY_START_X && action.point.y >= FLOOR_HEIGHT && action.point.y < TWEETY_START_Y) {
                         tweety.setX(action.point.x);
                         tweety.setY(action.point.y);
@@ -142,7 +153,7 @@ public class Play extends GameActivity implements InputProcessor {
             if (c.equals("TNT")) {
                 scoreBoard.scoreChange(-((TNT) hit).getNegativePoints());
             } else if (c.equals("Pig")) {
-                Pig p = (Pig)hit;
+                Pig p = (Pig) hit;
                 if (p.getWord().getId() == board.getWordId()) { // Correct answer
                     scoreBoard.scoreChange(SCORE_BUMP_SUCCESS);
                     p.setWord(vocabulary.pickAWord());
@@ -175,8 +186,14 @@ public class Play extends GameActivity implements InputProcessor {
 
         // --------- Scoreboard
         scoreBoard.update(dt);
-        if (scoreBoard.gameOver())
+        if (scoreBoard.gameOver()){
             AngryWirds.gameActivityManager.push(new GameOver());
+        }
+
+        // --------- Progress
+        if(goToProgess){
+            AngryWirds.gameActivityManager.push(new Progress());
+        }
     }
 
     @Override
@@ -185,6 +202,7 @@ public class Play extends GameActivity implements InputProcessor {
         spriteBatch.draw(background, 0, 0, camera.viewportWidth, camera.viewportHeight);
         board.draw(spriteBatch);
         scoreBoard.draw(spriteBatch);
+        button.update(spriteBatch);
         spriteBatch.draw(slingshot1, SLINGSHOT_OFFSET, FLOOR_HEIGHT, SLINGSHOT_WIDTH, SLINGSHOT_HEIGHT);
         if (tweety.isFrozen()) // Some things are only displayed while aiming
         {
