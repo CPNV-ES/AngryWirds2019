@@ -117,7 +117,7 @@ public class Play extends GameActivity implements InputProcessor {
 
                     if (action.point.x < buttonProgress.getX() + buttonProgress.getWidth() && action.point.y < buttonProgress.getY() + buttonProgress.getHeight()) {
 
-                        AngryWirds.gameActivityManager.push(new Progress());
+                        AngryWirds.gameActivityManager.push(new Progress(vocabulary));
                     }
 
                     Pig piggy = scenery.pigTouched(action.point.x, action.point.y);
@@ -153,9 +153,11 @@ public class Play extends GameActivity implements InputProcessor {
             } else if (c.equals("Pig")) {
                 Pig p = (Pig) hit;
                 if (p.getWord().getId() == board.getWordId()) { // Correct answer
+                    vocabulary.words.remove(board.getWordId());
                     scoreBoard.scoreChange(SCORE_BUMP_SUCCESS);
                     p.setWord(vocabulary.pickAWord());
                     board.setWord(scenery.pickAWord());
+
                 } else {
                     scoreBoard.scoreChange(-SCORE_BUMP_FAIL);
                 }
@@ -186,6 +188,9 @@ public class Play extends GameActivity implements InputProcessor {
         scoreBoard.update(dt);
         if (scoreBoard.gameOver())
             AngryWirds.gameActivityManager.push(new GameOver());
+
+        Gdx.input.setInputProcessor(this);
+        actions = new LinkedList<Touch>(); // User inputs are queued in here when events fire, handleInput processes them
     }
 
     @Override

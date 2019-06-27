@@ -3,6 +3,7 @@ package ch.cpnv.angrywirds.Models.Stage;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector2;
 
 import ch.cpnv.angrywirds.Activities.GameActivity;
 

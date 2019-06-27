@@ -14,7 +14,7 @@ public class Vocabulary {
     String vocName;
     int langprof;
     int langeleve;
-    ArrayList<Word> words;
+    public ArrayList<Word> words;
 
     public Vocabulary(int id, String vocName, int langprof, int langeleve){
         this.id = id;

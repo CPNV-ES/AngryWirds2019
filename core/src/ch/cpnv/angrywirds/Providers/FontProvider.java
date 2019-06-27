@@ -13,6 +13,7 @@ public abstract class FontProvider {
 
     public static BitmapFont Title;
     public static BitmapFont h1;
+    public static BitmapFont content;
 
     /**
      * Must be called once at the beginning of the app
@@ -27,6 +28,9 @@ public abstract class FontProvider {
 
         parameter.size = 80;
         h1 = generator.generateFont(parameter);
+
+        parameter.size = 38;
+        content = generator.generateFont(parameter);
     }
 
 }
