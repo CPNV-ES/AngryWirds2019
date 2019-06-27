@@ -2,7 +2,9 @@ package ch.cpnv.angrywirds.Activities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
@@ -11,7 +13,7 @@ import java.util.Queue;
 
 import ch.cpnv.angrywirds.AngryWirds;
 import ch.cpnv.angrywirds.Models.Data.Vocabulary;
-import ch.cpnv.angrywirds.Providers.VocProvider;
+import ch.cpnv.angrywirds.Models.Data.Word;
 
 /**
  * Created by Quentin Neves on 27.06.19.
@@ -19,24 +21,38 @@ import ch.cpnv.angrywirds.Providers.VocProvider;
 
 public class Progress extends GameActivity implements InputProcessor {
     private Texture background;
-    private Queue<Touch> actions;
     private Texture back;
+    private Texture tick;
+    private Queue<Touch> actions;
+
+    private BitmapFont font;
 
     private Vocabulary vocabulary;
+
     private static final Vector2 BACK_BUTTON_LOCATION = new Vector2(0,0);
     private static final Vector2 BACK_BUTTON_SIZE = new Vector2(100,100);
 
+    private static final int tableOffset = 500;
+    private static final int topOffset = 100;
+    private static final int wordSpacing = 500;
+    private static final int lineSpacing = 35;
 
 
     public Progress(Vocabulary vocabulary)
     {
         super();
+
         this.vocabulary = vocabulary;
+        font = new BitmapFont();
+        font.setColor(Color.BLACK);
+        font.getData().setScale(2);
+
         background = new Texture(Gdx.files.internal("background.png"));
         back = new Texture(Gdx.files.internal("back.png"));
+        tick = new Texture(Gdx.files.internal("tick.png"));
 
-        for(Vocabulary voc : VocProvider.vocabularies) {
-            Gdx.app.log("ANGRYEXA", "" + voc);
+        for (Word word : vocabulary.getWords()){
+            Gdx.app.log("ANGRYEXA", word.getValue1() + " // " + word.getValue2());
         }
 
         Gdx.input.setInputProcessor(this);
@@ -54,7 +70,7 @@ public class Progress extends GameActivity implements InputProcessor {
                     // Clicked on progress button
                     if(action.point.x >= BACK_BUTTON_LOCATION.x && action.point.x <= BACK_BUTTON_LOCATION.x + BACK_BUTTON_SIZE.x
                             && action.point.y >= BACK_BUTTON_LOCATION.y && action.point.y <= BACK_BUTTON_LOCATION.y + BACK_BUTTON_SIZE.y){
-                        // We must re-push because InputProcessor won't be usable
+                        // We must re-push Play Acitivity because InputProcessor won't be usable
                         AngryWirds.gameActivityManager.pop();
                         AngryWirds.gameActivityManager.pop();
                     }
@@ -67,10 +83,21 @@ public class Progress extends GameActivity implements InputProcessor {
     public void update(float dt) {
     }
 
+    public void showAllWords(){
+        int lineOffset = WORLD_HEIGHT - topOffset;
+        for (Word word : vocabulary.getWords()){
+            if (word.getCompleted()) spriteBatch.draw(tick, tableOffset - 50, lineOffset);
+            font.draw(spriteBatch, word.getValue1(), tableOffset, lineOffset);
+            font.draw(spriteBatch, word.getValue2(), tableOffset + wordSpacing, lineOffset);
+            lineOffset -= lineSpacing;
+        }
+    }
+
     @Override
     public void render() {
         spriteBatch.begin();
         spriteBatch.draw(background, 0, 0, camera.viewportWidth, camera.viewportHeight);
+        showAllWords();
         spriteBatch.draw(back, BACK_BUTTON_LOCATION.x, BACK_BUTTON_LOCATION.y, BACK_BUTTON_SIZE.x, BACK_BUTTON_SIZE.y);
         spriteBatch.end();
     }
