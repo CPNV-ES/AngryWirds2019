@@ -21,8 +21,8 @@ public class Word {
     public String getValue2() {
         return value2;
     }
-    public String getCorrect(){
-        return correct.toString();
+    public Boolean getCorrect(){
+        return correct;
     }
     public void setCorrect(){
         correct = true;

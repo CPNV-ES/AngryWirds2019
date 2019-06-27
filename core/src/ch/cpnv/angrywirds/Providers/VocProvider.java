@@ -66,7 +66,7 @@ public abstract class VocProvider {
                     Vocabulary newvoc = new Vocabulary(voc.getInt("mId"),voc.getString("mTitle"),voc.getInt("mLang1"),voc.getInt("mLang2"));
                     for (JsonValue word : voc.get("Words").iterator())
                     {
-                        newvoc.addWord(new Word(word.getInt("mId"), word.getString("mValue1"), word.getString("mValue2")));
+                        newvoc.addWord(new Word(word.getInt("mId"), word.getString("mValue1"), word.getString("mValue2"),true));
                     }
                     vocabularies.add(newvoc);
                 }
