@@ -83,7 +83,6 @@ public class Progress extends GameActivity implements InputProcessor {
                     // Clicked changeDisplay button
                     if(action.point.x >= REFRESH_BUTTON_LOCATION.x && action.point.x <= REFRESH_BUTTON_LOCATION.x + REFRESH_BUTTON_SIZE.x
                             && action.point.y >= REFRESH_BUTTON_LOCATION.y && action.point.y <= REFRESH_BUTTON_LOCATION.y + REFRESH_BUTTON_SIZE.y) {
-                        Gdx.app.log("ANGRYEXA", "SWITCH");
                         showRemaining = (showRemaining) ? false : true;
                     }
                     break;
