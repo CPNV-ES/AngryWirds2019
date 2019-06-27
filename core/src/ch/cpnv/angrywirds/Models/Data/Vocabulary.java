@@ -28,6 +28,19 @@ public class Vocabulary {
         words.add(w);
     }
 
+    public ArrayList<Word> allWords() {
+        return words;
+    }
+
+    public String getVocName() {
+        return vocName;
+    }
+
+
+    public ArrayList<Word> getVoc() {
+        return words;
+    }
+
     public Word pickAWord() {
         return words.get(AngryWirds.alea.nextInt(words.size()));
     }

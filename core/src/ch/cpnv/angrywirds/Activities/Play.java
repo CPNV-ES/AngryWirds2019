@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import ch.cpnv.angrywirds.AngryWirds;
+import ch.cpnv.angrywirds.Models.Data.FoundedWord;
 import ch.cpnv.angrywirds.Models.Data.Vocabulary;
 import ch.cpnv.angrywirds.Models.Data.Word;
 import ch.cpnv.angrywirds.Models.Stage.Bird;
@@ -54,9 +55,11 @@ public class Play extends GameActivity implements InputProcessor {
     private Queue<Touch> actions;
     private Vocabulary vocabulary; // The vocabulary we train
 
+    public ArrayList<FoundedWord> foundedwords;
+
     public Play() {
         super();
-
+        foundedwords = new ArrayList<FoundedWord>();
         babble = new ArrayList<Bubble>();
         vocabulary = VocProvider.vocabularies.get(0); // hardcoded for now
 
@@ -91,6 +94,12 @@ public class Play extends GameActivity implements InputProcessor {
             } catch (Exception e) {
                 Gdx.app.log("ANGRY", "Could not add Pig to scenery");
             }
+        }
+
+        try {
+            scenery.addElement(new PhysicalObject(new Vector2(0, 0), 100, 100, "block.png"));
+        } catch (Exception e) {
+            Gdx.app.log("EXC", "Could not add menu to scenery");
         }
 
         board = new Board(scenery.pickAWord()); // Put one word from a pig on the board
@@ -144,6 +153,12 @@ public class Play extends GameActivity implements InputProcessor {
             } else if (c.equals("Pig")) {
                 Pig p = (Pig)hit;
                 if (p.getWord().getId() == board.getWordId()) { // Correct answer
+                    foundedwords.add(new FoundedWord(p.getWord().getValue1(), p.getWord().getValue2()));
+                    for (FoundedWord word1 : foundedwords)
+                    {
+                        Gdx.app.log("WORD", word1.getValue1()+";");
+                        Gdx.app.log("WORD", word1.getValue2()+";");
+                    }
                     scoreBoard.scoreChange(SCORE_BUMP_SUCCESS);
                     p.setWord(vocabulary.pickAWord());
                     board.setWord(scenery.pickAWord());
@@ -219,6 +234,9 @@ public class Play extends GameActivity implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 pointTouched = camera.unproject(new Vector3(screenX, screenY, 0)); // Convert from screen coordinates to camera coordinates
         actions.add(new Touch(pointTouched, Touch.Type.down));
+        if (pointTouched.x <= 100 && pointTouched.y <= 100) {
+            AngryWirds.gameActivityManager.push(new Progress(foundedwords));
+        }
         return false;
     }
 

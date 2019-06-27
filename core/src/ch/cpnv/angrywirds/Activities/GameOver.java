@@ -30,6 +30,8 @@ public class GameOver extends GameActivity {
         {
             AngryWirds.gameActivityManager.pop(); // game over
             AngryWirds.gameActivityManager.pop(); // play
+            AngryWirds.gameActivityManager.pop(); // play
+            AngryWirds.gameActivityManager.pop(); // play
         }
     }
 
