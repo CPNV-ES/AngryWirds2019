@@ -61,7 +61,7 @@ public class Play extends GameActivity implements InputProcessor {
 
         babble = new ArrayList<Bubble>();
         vocabulary = VocProvider.vocabularies.get(0);
-        vocabularyCkecked = VocProvider.vocabularies.get(0);
+        vocabularyCkecked = new Vocabulary('1',"test",1,2);
 
         background = new Texture(Gdx.files.internal("background.png"));
         slingshot1 = new Texture(Gdx.files.internal("slingshot1.png"));
@@ -127,6 +127,7 @@ public class Play extends GameActivity implements InputProcessor {
                     Button button = scenery.buttonTouched(action.point.x, action.point.y);
                     if (button != null)
                         AngryWirds.gameActivityManager.push(new ReminingWords(vocabulary,vocabularyCkecked));
+
 
                     Pig piggy = scenery.pigTouched(action.point.x, action.point.y);
                     if (piggy != null)

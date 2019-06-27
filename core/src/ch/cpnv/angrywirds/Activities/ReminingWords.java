@@ -2,16 +2,14 @@ package ch.cpnv.angrywirds.Activities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 import ch.cpnv.angrywirds.AngryWirds;
@@ -28,14 +26,13 @@ public class ReminingWords  extends GameActivity implements InputProcessor {
     private Queue<Touch> actions;
     private ArrayList<Word> voc;
     private ArrayList<Word> vocCkecked;
-
-    public BitmapFont font;
+    private Boolean view;
 
     public ReminingWords(Vocabulary vocabulary, Vocabulary vocabularyCkecked)
     {
         super();
         vocCkecked = vocabularyCkecked.allWords();
-
+        view = true;
 
         voc = vocabulary.allWords();
         background = new Texture(Gdx.files.internal("background.png"));
@@ -66,10 +63,12 @@ public class ReminingWords  extends GameActivity implements InputProcessor {
             switch (action.type) {
                 case down:
                     Button button = scenery.buttonTouched(action.point.x, action.point.y);
-                    if (button != null) {
+                    if (button != null && action.point.x <60) {
                         AngryWirds.gameActivityManager.pop();
                         AngryWirds.gameActivityManager.pop();
-                    }
+                    }else if(button != null && action.point.x >60){
+                        view = !view;
+                     }
                     break;
 
                     default:
@@ -89,16 +88,32 @@ public class ReminingWords  extends GameActivity implements InputProcessor {
         scenery.draw(spriteBatch);
 
         spriteBatch.end();
-
-
         spriteBatch.begin();
+        if (view){
+            voc.removeAll(vocCkecked);
 
-        //voc.removeAll(vocCkecked);
-        for (Word word: voc) {
-                    BitmapFont font = new BitmapFont();
-                    font.draw(spriteBatch, word.getValue1(), 500 + 20, voc.indexOf(word) * 40);
-                    font.draw(spriteBatch, word.getValue2(), 500 + 120, voc.indexOf(word) * 40);
+            for (Word word : voc) {
+                BitmapFont font = new BitmapFont();
 
+                font.draw(spriteBatch, word.getValue1(), 500 + 20, voc.indexOf(word) * 40);
+                font.draw(spriteBatch, word.getValue2(), 500 + 120, voc.indexOf(word) * 40);
+            }
+            for (Word word : vocCkecked) {
+                BitmapFont font = new BitmapFont();
+                font.setColor(Color.BLUE);
+                font.draw(spriteBatch, word.getValue1(), 500 + 20, (voc.size()+vocCkecked.indexOf(word)) * 40);
+                font.draw(spriteBatch, word.getValue2(), 500 + 120, (voc.size()+vocCkecked.indexOf(word)) * 40);
+            }
+
+        }else {
+            voc.removeAll(vocCkecked);
+
+            for (Word word : voc) {
+                BitmapFont font = new BitmapFont();
+                font.draw(spriteBatch, word.getValue1(), 500 + 20, voc.indexOf(word) * 40);
+                font.draw(spriteBatch, word.getValue2(), 500 + 120, voc.indexOf(word) * 40);
+
+            }
         }
         spriteBatch.end();
     }
