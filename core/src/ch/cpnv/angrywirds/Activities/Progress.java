@@ -23,6 +23,7 @@ public class Progress extends GameActivity implements InputProcessor {
     private Texture background;
     private Texture back;
     private Texture tick;
+    private Texture refresh;
     private Queue<Touch> actions;
 
     private BitmapFont font;
@@ -32,10 +33,15 @@ public class Progress extends GameActivity implements InputProcessor {
     private static final Vector2 BACK_BUTTON_LOCATION = new Vector2(0,0);
     private static final Vector2 BACK_BUTTON_SIZE = new Vector2(100,100);
 
+    private static final Vector2 REFRESH_BUTTON_SIZE = new Vector2(100,100);
+    private static final Vector2 REFRESH_BUTTON_LOCATION = new Vector2(WORLD_WIDTH - REFRESH_BUTTON_SIZE.x,WORLD_HEIGHT - REFRESH_BUTTON_SIZE.y);
+
     private static final int tableOffset = 500;
     private static final int topOffset = 100;
     private static final int wordSpacing = 500;
     private static final int lineSpacing = 35;
+
+    private boolean showRemaining;
 
 
     public Progress(Vocabulary vocabulary)
@@ -50,10 +56,9 @@ public class Progress extends GameActivity implements InputProcessor {
         background = new Texture(Gdx.files.internal("background.png"));
         back = new Texture(Gdx.files.internal("back.png"));
         tick = new Texture(Gdx.files.internal("tick.png"));
+        refresh = new Texture(Gdx.files.internal("refresh.png"));
 
-        for (Word word : vocabulary.getWords()){
-            Gdx.app.log("ANGRYEXA", word.getValue1() + " // " + word.getValue2());
-        }
+        this.showRemaining = false;
 
         Gdx.input.setInputProcessor(this);
         actions = new LinkedList<Touch>(); // User inputs are queued in here when events fire, handleInput processes them
@@ -73,6 +78,13 @@ public class Progress extends GameActivity implements InputProcessor {
                         // We must re-push Play Acitivity because InputProcessor won't be usable
                         AngryWirds.gameActivityManager.pop();
                         AngryWirds.gameActivityManager.pop();
+                    }
+
+                    // Clicked changeDisplay button
+                    if(action.point.x >= REFRESH_BUTTON_LOCATION.x && action.point.x <= REFRESH_BUTTON_LOCATION.x + REFRESH_BUTTON_SIZE.x
+                            && action.point.y >= REFRESH_BUTTON_LOCATION.y && action.point.y <= REFRESH_BUTTON_LOCATION.y + REFRESH_BUTTON_SIZE.y) {
+                        Gdx.app.log("ANGRYEXA", "SWITCH");
+                        showRemaining = (showRemaining) ? false : true;
                     }
                     break;
             }
