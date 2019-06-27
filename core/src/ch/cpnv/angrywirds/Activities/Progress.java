@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -38,12 +40,16 @@ public class Progress extends GameActivity implements InputProcessor {
     private static final int tableOffset = 500;
     private static final int topOffset = 100;
     private static final int wordSpacing = 500;
-    private static final int lineSpacing = 35;
+    private static final int lineSpacing = 50;
 
     private boolean showRemaining;
     private Queue<Touch> actions;
 
-    private static final int maxDisplayableWords = 19;
+    private static final int maxDisplayableWords = 13;
+    private int page;
+
+    private ArrayList<Word>[] wordsPerPage;
+
     private int totalWords;
     private int totalRemainingWords;
 
@@ -68,10 +74,40 @@ public class Progress extends GameActivity implements InputProcessor {
         Gdx.input.setInputProcessor(this);
         actions = new LinkedList<Touch>(); // User inputs are queued in here when events fire, handleInput processes them
 
+        /* It gets way too much complicated for the required level of this exam
+
+        page = 1;
+
         for(Word word : vocabulary.getWords()) {
             if (!word.getCompleted()) totalRemainingWords++;
             totalWords++;
         }
+
+        int filledPage = 0;
+        wordsPerPage = (ArrayList<Word>[])new ArrayList[totalWords / maxDisplayableWords + 1];
+
+        ArrayList<Word> words = vocabulary.getWords();
+        Word[] arrayOfWords = words.toArray(new Word[words.size()]);
+
+        if(arrayOfWords != null) {
+            for (int i = 1; i <= totalWords; i++) {
+                wordsPerPage[filledPage].add(arrayOfWords[i - 1]);
+                // If we filled current page
+                if (i == maxDisplayableWords * filledPage) {
+                    filledPage++;
+                }
+            }
+        }
+
+        for (ArrayList<Word> wordsArray : wordsPerPage) {
+            if(wordsArray != null) {
+                for (Word word : wordsArray) {
+                    Gdx.app.log("ANGRYEXA", word.getValue1());
+                }
+            }
+        }
+
+        */
     }
 
     @Override
